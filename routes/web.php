@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\Userzone\DashboardController;
 use App\Http\Controllers\Userzone\ProfileController;
 use App\Http\Controllers\WelcomeController;
@@ -10,8 +12,11 @@ use Illuminate\Support\Facades\Route;
  */
 Route::get('/', WelcomeController::class)->name('welcome');
 
+Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+Route::get('/gallery/{photo}', [GalleryController::class, 'show'])->name('gallery.show');
 
-// Todo: add your public routes here
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
 /*
  * Authentication routes

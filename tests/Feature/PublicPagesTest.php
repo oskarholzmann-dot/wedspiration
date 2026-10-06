@@ -1,0 +1,38 @@
+<?php
+
+use App\Models\Photo;
+
+test('the welcome page shows the latest photos', function () {
+    $photo = Photo::factory()->create(['title' => 'Peony bridal bouquet']);
+
+    $this->get(route('welcome'))
+        ->assertOk()
+        ->assertSee('Wedspiration')
+        ->assertSee('Peony bridal bouquet');
+});
+
+test('guests can see the gallery', function () {
+    Photo::factory()->create(['title' => 'Rustic barn']);
+
+    $this->get(route('gallery.index'))
+        ->assertOk()
+        ->assertSee('Rustic barn');
+});
+
+test('guests can see a single photo', function () {
+    $photo = Photo::factory()->create(['title' => 'First dance']);
+
+    $this->get(route('gallery.show', $photo))
+        ->assertOk()
+        ->assertSee('First dance')
+        ->assertSee($photo->user->name);
+});
+
+test('a missing photo returns 404', function () {
+    $this->get('/gallery/999')->assertNotFound();
+});
+
+test('the about and contact pages load', function () {
+    $this->get(route('about'))->assertOk()->assertSee('About Wedspiration');
+    $this->get(route('contact'))->assertOk()->assertSee('Contact');
+});

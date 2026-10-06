@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ isset($title) ? $title.' - ' : '' }}{{ config('app.name', 'Wedspiration') }}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600|playfair-display:500,600&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind CSS & Alpine.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.1/dist/cdn.min.js"></script>
+    <style type="text/tailwindcss">
+        @theme {
+            --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+            --font-serif: 'Playfair Display', ui-serif, Georgia, serif;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-stone-800">
+<div class="min-h-screen flex flex-col bg-stone-50">
+    @include('layouts.public_navigation')
+
+    <!-- Page Content -->
+    <main class="flex-1">
+        {{ $slot }}
+    </main>
+
+    <footer class="border-t border-stone-200 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-stone-500 flex flex-col sm:flex-row gap-2 justify-between">
+            <p>&copy; {{ date('Y') }} Wedspiration</p>
+            <div class="flex gap-4">
+                <a href="{{ route('about') }}" class="hover:text-stone-800">About</a>
+                <a href="{{ route('contact') }}" class="hover:text-stone-800">Contact</a>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
