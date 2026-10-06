@@ -28,10 +28,10 @@ require __DIR__.'/auth.php';
  * Userzone routes
  */
 Route::middleware('auth')->group(function () {
-    // For the user's dashboard (after login)
-    Route::get('/dashboard', DashboardController::class)->name('dashboard');
-
-    // Todo: add your Userzone routes here
+    Route::name('user.')->group(function () {
+        // For the user's dashboard (after login)
+        Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    });
 
     // For the user's profile management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

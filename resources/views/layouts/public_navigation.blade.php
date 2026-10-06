@@ -27,7 +27,7 @@
             <!-- Login / Register, or a link to the userzone when logged in -->
             <div class="hidden sm:flex sm:items-center sm:gap-4 text-sm">
                 @auth
-                    <a href="{{ route('dashboard') }}" class="rounded-md bg-stone-900 px-4 py-2 text-white hover:bg-stone-700">
+                    <a href="{{ route('user.dashboard') }}" class="rounded-md bg-stone-900 px-4 py-2 text-white hover:bg-stone-700">
                         My folder
                     </a>
                 @else
@@ -69,7 +69,7 @@
 
         <div class="pt-4 pb-3 border-t border-stone-200 space-y-1">
             @auth
-                <x-breeze.responsive-nav-link :href="route('dashboard')">
+                <x-breeze.responsive-nav-link :href="route('user.dashboard')">
                     My folder
                 </x-breeze.responsive-nav-link>
             @else
