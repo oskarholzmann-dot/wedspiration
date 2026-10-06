@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Userzone;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -10,8 +11,14 @@ class DashboardController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(): View
+    public function __invoke(Request $request): View
     {
-        return view('userzone.dashboard');
+        $folders = $request->user()
+            ->folders()
+            ->withCount('photos')
+            ->with(['photos' => fn ($query) => $query->latest()->limit(4)])
+            ->get();
+
+        return view('userzone.dashboard', compact('folders'));
     }
 }
