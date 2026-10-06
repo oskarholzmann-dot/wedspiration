@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Enums\PhotoCategory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Photo extends Model
 {
@@ -35,6 +38,18 @@ class Photo extends Model
         return [
             'category' => PhotoCategory::class,
         ];
+    }
+
+    /**
+     * Get the public URL of the image, for both external links and uploaded files.
+     *
+     * @return Attribute<string, never>
+     */
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::get(fn () => Str::startsWith($this->image_path, ['http://', 'https://'])
+            ? $this->image_path
+            : Storage::disk('public')->url($this->image_path));
     }
 
     /**
