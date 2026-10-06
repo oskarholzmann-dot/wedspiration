@@ -14,7 +14,9 @@
             @forelse ($folders as $folder)
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                     <div class="flex flex-wrap items-baseline justify-between gap-2">
-                        <h3 class="text-lg font-semibold text-gray-900">{{ $folder->name }}</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            <a href="{{ route('user.folders.show', $folder) }}" class="hover:underline">{{ $folder->name }}</a>
+                        </h3>
                         <p class="text-sm text-gray-500">
                             {{ $folder->photos_count }} {{ Str::plural('photo', $folder->photos_count) }}
                             @if ($folder->wedding_date)

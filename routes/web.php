@@ -3,6 +3,7 @@
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Userzone\DashboardController;
+use App\Http\Controllers\Userzone\FolderController;
 use App\Http\Controllers\Userzone\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::name('user.')->group(function () {
         // For the user's dashboard (after login)
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+        Route::get('/folders/{folder}', [FolderController::class, 'show'])->name('folders.show');
     });
 
     // For the user's profile management
