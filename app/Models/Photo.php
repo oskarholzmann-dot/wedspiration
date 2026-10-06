@@ -53,6 +53,16 @@ class Photo extends Model
     }
 
     /**
+     * Delete the stored image file. External images (like seeded placeholders) are left alone.
+     */
+    public function deleteImageFile(): void
+    {
+        if (! Str::startsWith($this->image_path, ['http://', 'https://'])) {
+            Storage::disk('public')->delete($this->image_path);
+        }
+    }
+
+    /**
      * Get the user who uploaded the photo.
      *
      * @return BelongsTo<User, $this>

@@ -21,6 +21,13 @@
                 <p class="mt-6 text-sm text-stone-500">
                     Shared by {{ $photo->user->name }} on {{ $photo->created_at->format('d.m.Y') }}
                 </p>
+
+                @can('update', $photo)
+                    <a href="{{ route('user.photos.edit', $photo) }}"
+                       class="mt-6 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm text-white hover:bg-stone-700">
+                        Edit or delete this photo
+                    </a>
+                @endcan
             </div>
         </div>
     </section>

@@ -25,6 +25,15 @@
 <div class="min-h-screen flex flex-col bg-stone-50">
     @include('layouts.public_navigation')
 
+    <!-- Success message after a form was saved -->
+    @if (session('success'))
+        <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6">
+            <div class="rounded-md bg-green-50 p-4 text-sm text-green-800 ring-1 ring-green-200">
+                {{ session('success') }}
+            </div>
+        </div>
+    @endif
+
     <!-- Page Content -->
     <main class="flex-1">
         {{ $slot }}

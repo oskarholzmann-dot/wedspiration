@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/photos/create', [PhotoController::class, 'create'])->name('photos.create');
         Route::post('/photos', [PhotoController::class, 'store'])->name('photos.store');
+        Route::get('/photos/{photo}/edit', [PhotoController::class, 'edit'])->name('photos.edit');
+        Route::patch('/photos/{photo}', [PhotoController::class, 'update'])->name('photos.update');
+        Route::delete('/photos/{photo}', [PhotoController::class, 'destroy'])->name('photos.destroy');
     });
 
     // For the user's profile management
