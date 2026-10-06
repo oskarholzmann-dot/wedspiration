@@ -15,6 +15,9 @@
                     <x-breeze.nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')">
                         My folder
                     </x-breeze.nav-link>
+                    <x-breeze.nav-link :href="route('user.photos.create')" :active="request()->routeIs('user.photos.create')">
+                        Upload photo
+                    </x-breeze.nav-link>
                     <x-breeze.nav-link :href="route('gallery.index')" :active="request()->routeIs('gallery.*')">
                         Gallery
                     </x-breeze.nav-link>
@@ -72,6 +75,9 @@ Log Out
         <div class="pt-2 pb-3 space-y-1">
             <x-breeze.responsive-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard')">
                 My folder
+            </x-breeze.responsive-nav-link>
+            <x-breeze.responsive-nav-link :href="route('user.photos.create')" :active="request()->routeIs('user.photos.create')">
+                Upload photo
             </x-breeze.responsive-nav-link>
             <x-breeze.responsive-nav-link :href="route('gallery.index')" :active="request()->routeIs('gallery.*')">
                 Gallery

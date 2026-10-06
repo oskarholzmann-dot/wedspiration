@@ -7,9 +7,15 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <p class="px-4 sm:px-0 text-gray-600">
-                Your wedding folders. Every photo you upload is added to your folder and to the public gallery.
-            </p>
+            <div class="px-4 sm:px-0 flex flex-wrap items-center justify-between gap-4">
+                <p class="text-gray-600">
+                    Your wedding folders. Every photo you upload is added to your folder and to the public gallery.
+                </p>
+                <a href="{{ route('user.photos.create') }}"
+                   class="inline-flex items-center px-4 py-2 bg-gray-800 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                    Upload photo
+                </a>
+            </div>
 
             @forelse ($folders as $folder)
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
