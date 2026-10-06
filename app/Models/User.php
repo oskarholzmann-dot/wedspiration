@@ -59,6 +59,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user's main wedding folder, creating it when the user has none yet.
+     */
+    public function defaultFolder(): WeddingFolder
+    {
+        return $this->folders()->oldest('id')->first()
+            ?? $this->folders()->create(['name' => $this->name."'s wedding"]);
+    }
+
+    /**
      * Get the photos uploaded by the user.
      *
      * @return HasMany<Photo, $this>

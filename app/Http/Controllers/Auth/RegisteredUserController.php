@@ -41,6 +41,9 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Every couple starts with their own wedding folder
+        $user->defaultFolder();
+
         event(new Registered($user));
 
         Auth::login($user);
