@@ -21,6 +21,11 @@
                     <x-breeze.nav-link :href="route('gallery.index')" :active="request()->routeIs('gallery.*')">
                         Gallery
                     </x-breeze.nav-link>
+                    @if (Auth::user()->is_admin)
+                        <x-breeze.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                            Admin
+                        </x-breeze.nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -82,6 +87,11 @@ Log Out
             <x-breeze.responsive-nav-link :href="route('gallery.index')" :active="request()->routeIs('gallery.*')">
                 Gallery
             </x-breeze.responsive-nav-link>
+            @if (Auth::user()->is_admin)
+                <x-breeze.responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                    Admin
+                </x-breeze.responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
