@@ -21,8 +21,19 @@ class WeddingFolderFactory extends Factory
         return [
             'user_id' => User::factory(),
             'name' => fake()->firstName().' & '.fake()->firstName(),
-            'notes' => fake()->optional()->paragraph(),
+            'notes' => fake()->optional()->randomElement(self::NOTES),
             'wedding_date' => fake()->optional()->dateTimeBetween('now', '+2 years'),
         ];
     }
+
+    /**
+     * Example briefing notes a couple might leave for the photographer.
+     */
+    private const NOTES = [
+        'Relaxed, documentary style please - no stiff group poses.',
+        'Outdoor ceremony, so we would love lots of natural light shots.',
+        'Small wedding with around 40 guests, mostly family.',
+        'Please capture the details: rings, flowers and the cake.',
+        'We want a golden hour session right after dinner.',
+    ];
 }
