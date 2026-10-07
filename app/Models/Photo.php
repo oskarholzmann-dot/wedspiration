@@ -42,23 +42,33 @@ class Photo extends Model
     }
 
     /**
-     * Get the public URL of the image, for both external links and uploaded files.
+     * Get the public URL of the image: an external link, a seeded sample image or an uploaded file.
      *
      * @return Attribute<string, never>
      */
     protected function imageUrl(): Attribute
     {
-        return Attribute::get(fn () => Str::startsWith($this->image_path, ['http://', 'https://'])
-            ? $this->image_path
-            : Storage::disk('public')->url($this->image_path));
+        return Attribute::get(fn () => match (true) {
+            Str::startsWith($this->image_path, ['http://', 'https://']) => $this->image_path,
+            Str::startsWith($this->image_path, 'images/seed/') => asset($this->image_path),
+            default => Storage::disk('public')->url($this->image_path),
+        });
     }
 
     /**
-     * Delete the stored image file. External images (like seeded placeholders) are left alone.
+     * Whether the image was uploaded by a user (and lives on the public storage disk).
+     */
+    public function isUploaded(): bool
+    {
+        return ! Str::startsWith($this->image_path, ['http://', 'https://', 'images/seed/']);
+    }
+
+    /**
+     * Delete the uploaded image file. External links and seeded sample images are left alone.
      */
     public function deleteImageFile(): void
     {
-        if (! Str::startsWith($this->image_path, ['http://', 'https://'])) {
+        if ($this->isUploaded()) {
             Storage::disk('public')->delete($this->image_path);
         }
     }

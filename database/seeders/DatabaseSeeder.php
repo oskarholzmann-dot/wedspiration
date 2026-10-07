@@ -37,14 +37,14 @@ class DatabaseSeeder extends Seeder
     }
 
     /**
-     * Give the user a wedding folder with a few photos, the same way an upload does.
+     * Give the user a wedding folder with 3 to 4 photos, the same way an upload does.
      */
     private function createFolderWithPhotos(User $user): void
     {
         $folder = WeddingFolder::factory()->for($user)->create();
 
         $photos = Photo::factory()
-            ->count(fake()->numberBetween(4, 8))
+            ->count(fake()->numberBetween(3, 4))
             ->for($user)
             ->create();
 

@@ -13,33 +13,56 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PhotoFactory extends Factory
 {
     /**
+     * Position in the list of sample images, so seeded photos repeat as little as possible.
+     */
+    private static int $nextImage = 0;
+
+    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
-        $category = fake()->randomElement(PhotoCategory::cases());
+        $image = self::IMAGES[self::$nextImage++ % count(self::IMAGES)];
 
         return [
             'user_id' => User::factory(),
-            'title' => fake()->randomElement(self::TITLES[$category->value]),
+            'title' => $image['title'],
             'description' => fake()->optional()->randomElement(self::DESCRIPTIONS),
-            'category' => $category,
-            'image_path' => 'https://picsum.photos/seed/'.fake()->unique()->uuid().'/800/600',
+            'category' => PhotoCategory::from($image['category']),
+            'image_path' => 'images/seed/'.$image['file'],
         ];
     }
 
     /**
-     * Example titles per category, so seeded photos look like real inspiration.
+     * Sample wedding photos in public/images/seed (free Unsplash photos, see CREDITS.md there).
      */
-    private const TITLES = [
-        'ceremony' => ['Vows under the old oak', 'First look by the lake', 'Ring exchange at sunset', 'Walking down the aisle'],
-        'reception' => ['Long table dinner', 'First dance', 'Champagne tower', 'Fairy lights in the barn'],
-        'dress' => ['Lace sleeves', 'Minimalist silk gown', 'Long cathedral veil', 'Boho dress with open back'],
-        'flowers' => ['Peony bridal bouquet', 'Wildflower arch', 'Eucalyptus table runner', 'Pampas grass decor'],
-        'venue' => ['Vineyard in Tuscany', 'Rustic barn', 'Beach at golden hour', 'Castle garden'],
-        'details' => ['Hand-lettered place cards', 'Vintage ring box', 'Wax-sealed invitations', 'Naked cake with berries'],
+    private const IMAGES = [
+        ['file' => 'ceremony-1.jpg', 'category' => 'ceremony', 'title' => 'Rose-lined garden aisle'],
+        ['file' => 'reception-1.jpg', 'category' => 'reception', 'title' => 'Long table with wildflowers'],
+        ['file' => 'dress-1.jpg', 'category' => 'dress', 'title' => 'Lace back detail'],
+        ['file' => 'flowers-1.jpg', 'category' => 'flowers', 'title' => 'Peach rose bouquet'],
+        ['file' => 'venue-1.jpg', 'category' => 'venue', 'title' => 'Garden gazebo'],
+        ['file' => 'details-1.jpg', 'category' => 'details', 'title' => 'Rings on the vows'],
+        ['file' => 'ceremony-2.jpg', 'category' => 'ceremony', 'title' => 'Lakeside ceremony'],
+        ['file' => 'reception-2.jpg', 'category' => 'reception', 'title' => 'Dancing the night away'],
+        ['file' => 'dress-2.jpg', 'category' => 'dress', 'title' => 'Ball gown by the window'],
+        ['file' => 'flowers-2.jpg', 'category' => 'flowers', 'title' => 'Eucalyptus and thistle bouquet'],
+        ['file' => 'venue-2.jpg', 'category' => 'venue', 'title' => 'Fairy-light aisle at night'],
+        ['file' => 'details-2.jpg', 'category' => 'details', 'title' => 'Bridal heels and bouquet'],
+        ['file' => 'ceremony-3.jpg', 'category' => 'ceremony', 'title' => 'Ring exchange in black and white'],
+        ['file' => 'reception-3.jpg', 'category' => 'reception', 'title' => 'Ballroom reception tables'],
+        ['file' => 'dress-3.jpg', 'category' => 'dress', 'title' => 'Flowing veil on the stairs'],
+        ['file' => 'flowers-3.jpg', 'category' => 'flowers', 'title' => 'White and blush bouquet'],
+        ['file' => 'venue-3.jpg', 'category' => 'venue', 'title' => 'Light-filled church'],
+        ['file' => 'details-3.jpg', 'category' => 'details', 'title' => 'Ring resting on roses'],
+        ['file' => 'ceremony-4.jpg', 'category' => 'ceremony', 'title' => 'Autumn forest ceremony'],
+        ['file' => 'reception-4.jpg', 'category' => 'reception', 'title' => 'Candlelit dinner table'],
+        ['file' => 'dress-4.jpg', 'category' => 'dress', 'title' => 'Boho dress at golden hour'],
+        ['file' => 'flowers-4.jpg', 'category' => 'flowers', 'title' => 'Wild autumn bouquet'],
+        ['file' => 'venue-4.jpg', 'category' => 'venue', 'title' => 'Rustic barn with drapes'],
+        ['file' => 'details-4.jpg', 'category' => 'details', 'title' => 'Gold wedding bands'],
     ];
 
     /**

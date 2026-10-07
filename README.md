@@ -41,7 +41,7 @@ All seeded accounts use the password **`password`**.
 
 ### Notes
 
-- **Seeded images** are placeholders from [picsum.photos](https://picsum.photos), so an internet connection is needed to see them.
+- **Seeded images** are 24 free wedding photos from Unsplash, included in `public/images/seed`, so they work offline. Photographers are credited in [CREDITS.md](public/images/seed/CREDITS.md).
 - **Uploads** are limited to **2 MB** per image, PHP's default `upload_max_filesize`.
 
 ---
