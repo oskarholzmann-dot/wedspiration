@@ -19,7 +19,7 @@ class GalleryController extends Controller
 
         $photos = Photo::with('user')
             ->when($activeCategory, fn ($query) => $query->where('category', $activeCategory))
-            ->latest()
+            ->newestFirst()
             ->paginate(12)
             ->withQueryString();
 

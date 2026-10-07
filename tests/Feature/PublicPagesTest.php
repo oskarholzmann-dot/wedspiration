@@ -20,6 +20,16 @@ test('guests can see the gallery', function () {
         ->assertSee('Rustic barn');
 });
 
+test('photos uploaded in the same second are shown newest first', function () {
+    $this->freezeTime();
+    Photo::factory()->create(['title' => 'Uploaded first']);
+    Photo::factory()->create(['title' => 'Uploaded second']);
+    Photo::factory()->create(['title' => 'Uploaded third']);
+
+    $this->get(route('gallery.index'))
+        ->assertSeeInOrder(['Uploaded third', 'Uploaded second', 'Uploaded first']);
+});
+
 test('the gallery can be filtered by category', function () {
     Photo::factory()->create(['title' => 'Peony bouquet', 'category' => PhotoCategory::Flowers]);
     Photo::factory()->create(['title' => 'Castle garden', 'category' => PhotoCategory::Venue]);

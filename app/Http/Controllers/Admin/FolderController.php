@@ -16,7 +16,7 @@ class FolderController extends Controller
      */
     public function index(): View
     {
-        $folders = WeddingFolder::with('user')->withCount('photos')->latest()->paginate(15);
+        $folders = WeddingFolder::with('user')->withCount('photos')->latest()->latest('id')->paginate(15);
 
         return view('admin.folders.index', compact('folders'));
     }

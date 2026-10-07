@@ -17,7 +17,7 @@ class PhotoController extends Controller
      */
     public function index(): View
     {
-        $photos = Photo::with('user')->latest()->paginate(15);
+        $photos = Photo::with('user')->newestFirst()->paginate(15);
 
         return view('admin.photos.index', compact('photos'));
     }

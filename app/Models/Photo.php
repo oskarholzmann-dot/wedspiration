@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\PhotoCategory;
 use Database\Factories\PhotoFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,17 @@ class Photo extends Model
         return [
             'category' => PhotoCategory::class,
         ];
+    }
+
+    /**
+     * Newest first. Photos uploaded in the same second are ordered by id, so the order never jumps around.
+     *
+     * @param  Builder<Photo>  $query
+     */
+    public function scopeNewestFirst(Builder $query): void
+    {
+        $query->orderByDesc($query->qualifyColumn('created_at'))
+            ->orderByDesc($query->qualifyColumn('id'));
     }
 
     /**
