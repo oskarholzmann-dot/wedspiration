@@ -39,6 +39,21 @@
         {{ $slot }}
     </main>
 
+    @auth
+        <!-- Appears while a photo is dragged: drop it here to save it into your folder -->
+        <div data-drop-zone hidden data-over="false"
+             class="group fixed inset-x-0 bottom-0 z-50 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+            <div class="mx-auto max-w-3xl rounded-xl border-2 border-dashed border-rose-700 bg-white/95 px-6 py-6 text-center shadow-lg transition
+                        group-data-[over=true]:bg-rose-50 group-data-[over=true]:scale-[1.02]">
+                <p data-drop-message class="font-medium text-stone-900">
+                    Drop here to save to {{ Auth::user()->folders()->oldest('id')->value('name') ?? 'your folder' }}
+                </p>
+            </div>
+        </div>
+
+        <script src="{{ asset('js/save-photos.js') }}" defer></script>
+    @endauth
+
     <footer class="border-t border-stone-200 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-stone-500 flex flex-col sm:flex-row gap-2 justify-between">
             <p>&copy; {{ date('Y') }} Wedspiration</p>

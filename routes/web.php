@@ -10,6 +10,7 @@ use App\Http\Controllers\Userzone\DashboardController;
 use App\Http\Controllers\Userzone\FolderController;
 use App\Http\Controllers\Userzone\PhotoController;
 use App\Http\Controllers\Userzone\ProfileController;
+use App\Http\Controllers\Userzone\SavedPhotoController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/folders/{folder}', [FolderController::class, 'show'])->name('folders.show');
         Route::get('/folders/{folder}/edit', [FolderController::class, 'edit'])->name('folders.edit');
         Route::patch('/folders/{folder}', [FolderController::class, 'update'])->name('folders.update');
+
+        // Save any photo from the gallery into your own folder, or remove it again
+        Route::post('/saved-photos/{photo}', [SavedPhotoController::class, 'store'])->name('saved-photos.store');
+        Route::delete('/saved-photos/{photo}', [SavedPhotoController::class, 'destroy'])->name('saved-photos.destroy');
 
         Route::get('/photos/create', [PhotoController::class, 'create'])->name('photos.create');
         Route::post('/photos', [PhotoController::class, 'store'])->name('photos.store');

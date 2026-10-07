@@ -41,6 +41,8 @@
     <main>
         {{ $slot }}
     </main>
+
+    <script src="{{ asset('js/save-photos.js') }}" defer></script>
 </div>
 </body>
 </html>

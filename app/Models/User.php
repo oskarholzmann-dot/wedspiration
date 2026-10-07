@@ -80,6 +80,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Ids of the photos in the user's folder, loaded once per request (used to mark photos as saved).
+     *
+     * @return list<int>
+     */
+    public function savedPhotoIds(): array
+    {
+        return once(fn () => $this->folders()->oldest('id')->first()?->photos()->pluck('photos.id')->all() ?? []);
+    }
+
+    /**
      * Get the photos uploaded by the user.
      *
      * @return HasMany<Photo, $this>
