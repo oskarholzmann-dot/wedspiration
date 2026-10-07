@@ -72,6 +72,28 @@ test('a group of photos can be moved into a category at once', function () {
     $photos->each(fn ($photo) => expect($photo->fresh()->category)->toBe(PhotoCategory::Flowers));
 });
 
+test('dropping photos on All takes them out of their subcategory', function () {
+    $subcategory = Subcategory::factory()->create();
+    $photos = Photo::factory()->count(2)->create(['subcategory_id' => $subcategory->id]);
+
+    $this->actingAs($this->admin)
+        ->patchJson(route('admin.photos.sort'), ['photos' => $photos->pluck('id'), 'remove_subcategory' => true])
+        ->assertOk()
+        ->assertJson(['message' => '2 photos removed from their subcategory.', 'counts' => [$subcategory->id => 0]]);
+
+    $photos->each(function ($photo) {
+        $this->assertModelExists($photo);
+        expect($photo->fresh()->subcategory_id)->toBeNull();
+    });
+});
+
+test('admins can drop photos on the All pill of the subcategory row', function () {
+    Photo::factory()->create();
+
+    $this->actingAs($this->admin)->get(route('gallery.index'))->assertSee('data-subcategory-clear', false);
+    $this->actingAs(User::factory()->create())->get(route('gallery.index'))->assertDontSee('data-subcategory-clear', false);
+});
+
 test('moving a group needs photos and exactly one target', function () {
     $photo = Photo::factory()->create();
     $subcategory = Subcategory::factory()->create();

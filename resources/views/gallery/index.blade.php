@@ -36,8 +36,10 @@
                 <nav class="flex flex-wrap items-center gap-2 text-sm" aria-label="Subcategories">
                     <span class="me-1 text-xs uppercase tracking-wide text-stone-500">Subcategories</span>
 
+                    {{-- Admins: dropping photos on "All" takes them out of their subcategory --}}
                     <a href="{{ $subcategoryUrl(null) }}"
-                       @class(['rounded-full px-3 py-1 ring-1', $pillActive => ! $activeSubcategory, $pillIdle => $activeSubcategory])>
+                       @if ($isAdmin) data-subcategory-clear title="Drop photos here to take them out of their subcategory" @endif
+                       @class(['rounded-full px-3 py-1 ring-1 transition data-[over=true]:scale-110 data-[over=true]:ring-2 data-[over=true]:ring-rose-700', $pillActive => ! $activeSubcategory, $pillIdle => $activeSubcategory])>
                         All
                     </a>
 

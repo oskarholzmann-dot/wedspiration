@@ -133,7 +133,8 @@ async function drop(pill, target, event) {
     const activeSubcategory = grid?.dataset.activeSubcategory;
     const activeCategory = grid?.dataset.activeCategory;
     const leaves = (target.subcategory_id && activeSubcategory && String(target.subcategory_id) !== activeSubcategory)
-        || (target.category && activeCategory && target.category !== activeCategory);
+        || (target.category && activeCategory && target.category !== activeCategory)
+        || (target.remove_subcategory && activeSubcategory);
 
     tiles.forEach((tile) => (leaves ? fadeOut(tile) : setSelected(tile, false)));
 }
@@ -152,6 +153,11 @@ function makeDropTarget(pill, target) {
 
 document.querySelectorAll('[data-subcategory-drop]').forEach((pill) => {
     makeDropTarget(pill, { subcategory_id: Number(pill.dataset.subcategoryDrop) });
+});
+
+// "All" in the subcategory row: take the photos out of their subcategory (they stay in the gallery)
+document.querySelectorAll('[data-subcategory-clear]').forEach((pill) => {
+    makeDropTarget(pill, { remove_subcategory: true });
 });
 
 document.querySelectorAll('[data-category-drop]').forEach((pill) => {

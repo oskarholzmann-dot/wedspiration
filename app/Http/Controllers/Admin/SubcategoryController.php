@@ -49,25 +49,30 @@ class SubcategoryController extends Controller
         $validated = $request->validate([
             'photos' => ['required', 'array'],
             'photos.*' => ['integer', 'exists:photos,id'],
-            // Exactly one target: a subcategory or a category
-            'subcategory_id' => ['required_without:category', 'prohibits:category', 'integer', 'exists:subcategories,id'],
-            'category' => ['required_without:subcategory_id', Rule::enum(PhotoCategory::class)],
+            // Exactly one target: a subcategory, a category, or "out of its subcategory" (dropped on All)
+            'subcategory_id' => ['required_without_all:category,remove_subcategory', 'prohibits:category,remove_subcategory', 'integer', 'exists:subcategories,id'],
+            'category' => ['required_without_all:subcategory_id,remove_subcategory', 'prohibits:remove_subcategory', Rule::enum(PhotoCategory::class)],
+            'remove_subcategory' => ['required_without_all:subcategory_id,category', 'accepted'],
         ]);
 
         $photos = Photo::whereIn('id', $validated['photos']);
+        $count = count($validated['photos']);
+        $amount = "{$count} ".Str::plural('photo', $count);
 
         if (isset($validated['subcategory_id'])) {
             $photos->update(['subcategory_id' => $validated['subcategory_id']]);
-            $target = Subcategory::find($validated['subcategory_id'])->name;
-        } else {
+            $message = "{$amount} moved to ".Subcategory::find($validated['subcategory_id'])->name.'.';
+        } elseif (isset($validated['category'])) {
             $photos->update(['category' => $validated['category']]);
-            $target = PhotoCategory::from($validated['category'])->label();
+            $message = "{$amount} moved to ".PhotoCategory::from($validated['category'])->label().'.';
+        } else {
+            // The photos stay in the gallery, they just leave their subcategory
+            $photos->update(['subcategory_id' => null]);
+            $message = "{$amount} removed from their subcategory.";
         }
 
-        $count = count($validated['photos']);
-
         return response()->json([
-            'message' => "{$count} ".Str::plural('photo', $count)." moved to {$target}.",
+            'message' => $message,
             'counts' => Subcategory::withCount('photos')->pluck('photos_count', 'id'),
         ]);
     }
