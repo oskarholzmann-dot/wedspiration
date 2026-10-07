@@ -31,9 +31,17 @@
                                 <td class="px-4 py-2 text-gray-600">{{ $folder->user->name }}</td>
                                 <td class="px-4 py-2 text-gray-600">{{ $folder->wedding_date?->format('d.m.Y') ?? '-' }}</td>
                                 <td class="px-4 py-2 text-gray-600">{{ $folder->photos_count }}</td>
-                                <td class="px-4 py-2 text-right whitespace-nowrap space-x-3">
-                                    <a href="{{ route('admin.folders.show', $folder) }}" class="text-indigo-600 hover:underline">View</a>
-                                    <a href="{{ route('admin.folders.edit', $folder) }}" class="text-indigo-600 hover:underline">Edit</a>
+                                <td class="px-4 py-2 text-right whitespace-nowrap">
+                                    <div class="inline-flex items-center gap-3">
+                                        <a href="{{ route('admin.folders.show', $folder) }}" class="text-indigo-600 hover:underline">View</a>
+                                        <a href="{{ route('admin.folders.edit', $folder) }}" class="text-indigo-600 hover:underline">Edit</a>
+                                        <form method="post" action="{{ route('admin.folders.destroy', $folder) }}"
+                                              onsubmit="return confirm('Delete the folder &quot;{{ $folder->name }}&quot;? Its photos stay in the gallery.')">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

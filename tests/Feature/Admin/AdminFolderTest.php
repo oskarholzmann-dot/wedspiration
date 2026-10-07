@@ -70,6 +70,16 @@ test('update changes the folder but not the owner', function () {
         ->assertSessionHasErrors('user_id');
 });
 
+test('the folder list has a delete button for every folder', function () {
+    $folders = WeddingFolder::factory()->count(2)->create();
+
+    $response = $this->actingAs($this->admin)->get(route('admin.folders.index'));
+
+    foreach ($folders as $folder) {
+        $response->assertSee('action="'.route('admin.folders.destroy', $folder).'"', false);
+    }
+});
+
 test('destroy deletes the folder but keeps its photos', function () {
     $folder = WeddingFolder::factory()->create();
     $photo = Photo::factory()->for($folder->user)->create();
