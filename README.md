@@ -50,9 +50,9 @@ All seeded accounts use the password **`password`**.
 
 | Area | What you can do |
 |------|-----------------|
-| **Public** | Welcome page with the latest photos, paginated gallery, photo detail page, about & contact |
+| **Public** | Welcome page with the latest photos, gallery with a Photos / Folders switch and category filter, photo and folder pages, about & contact |
 | **Account** | Register, log in, edit profile (Laravel Breeze). Every new user gets a wedding folder automatically. |
-| **Userzone** | Dashboard with your folders, folder page, upload a photo, edit/replace/delete your own photos |
+| **Userzone** | Dashboard, folder page, rename your folder, upload many photos at once (large photos are shrunk in the browser), edit/replace/delete your own photos |
 | **Admin** | Dashboard with counts, full CRUD for photos, users and folders |
 
 ## Data model
@@ -71,9 +71,9 @@ WeddingFolder <──N-M──> Photo (pivot table: folder_photo)
 
 | Area | Routes |
 |------|--------|
-| Public | `welcome`, `gallery.index`, `gallery.show`, `about`, `contact` |
+| Public | `welcome`, `gallery.index`, `gallery.show`, `gallery.folders`, `gallery.folders.show`, `about`, `contact` |
 | Auth | `login`, `register`, `logout` (+ Breeze password routes) |
-| Userzone (`auth`) | `user.dashboard`, `user.folders.show`, `user.photos.create/store/edit/update/destroy` |
+| Userzone (`auth`) | `user.dashboard`, `user.folders.show/edit/update`, `user.photos.create/store/edit/update/destroy` |
 | Admin (`auth` + `admin`) | `admin.dashboard`, `admin.photos.*`, `admin.users.*`, `admin.folders.*` (all 7 resource methods each) |
 
 See all of them with `php artisan route:list --except-vendor`.
