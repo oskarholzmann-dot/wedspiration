@@ -27,6 +27,7 @@ class Photo extends Model
         'title',
         'description',
         'category',
+        'subcategory_id',
         'image_path',
     ];
 
@@ -83,6 +84,16 @@ class Photo extends Model
         if ($this->isUploaded()) {
             Storage::disk('public')->delete($this->image_path);
         }
+    }
+
+    /**
+     * Get the subcategory the photo is in (admins sort photos into these).
+     *
+     * @return BelongsTo<Subcategory, $this>
+     */
+    public function subcategory(): BelongsTo
+    {
+        return $this->belongsTo(Subcategory::class);
     }
 
     /**

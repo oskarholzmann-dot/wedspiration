@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Photo;
+use App\Models\Subcategory;
 use App\Models\User;
 use App\Models\WeddingFolder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -34,6 +35,13 @@ class DatabaseSeeder extends Seeder
         foreach ([$admin, $couple, ...$otherUsers] as $user) {
             $this->createFolderWithPhotos($user);
         }
+
+        // A few subcategories, each with some of the photos sorted into it
+        $subcategories = Subcategory::factory()->count(4)->create();
+
+        Photo::inRandomOrder()->take(12)->get()->each(
+            fn (Photo $photo) => $photo->subcategory()->associate($subcategories->random())->save()
+        );
     }
 
     /**
