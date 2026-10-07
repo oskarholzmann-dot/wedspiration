@@ -29,7 +29,6 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
  */
 require __DIR__.'/auth.php';
 
-
 /*
  * Userzone routes
  */
@@ -52,7 +51,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 /*
  * Admin routes (only for users with is_admin)

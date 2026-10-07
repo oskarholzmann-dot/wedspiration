@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PhotoCategory;
+use Database\Factories\PhotoFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 
 class Photo extends Model
 {
-    /** @use HasFactory<\Database\Factories\PhotoFactory> */
+    /** @use HasFactory<PhotoFactory> */
     use HasFactory;
 
     /**
