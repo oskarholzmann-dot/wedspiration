@@ -12,6 +12,12 @@
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                         <p class="text-sm text-gray-500">{{ ucfirst($label) }}</p>
                         <p class="mt-2 text-3xl font-semibold text-gray-900">{{ $count }}</p>
+
+                        @if (Route::has("admin.{$label}.index"))
+                            <a href="{{ route("admin.{$label}.index") }}" class="mt-4 inline-block text-sm text-indigo-600 hover:underline">
+                                Manage {{ $label }} &rarr;
+                            </a>
+                        @endif
                     </div>
                 @endforeach
             </div>
