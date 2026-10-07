@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\FolderRequest;
+use App\Models\User;
+use App\Models\WeddingFolder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+
+class FolderController extends Controller
+{
+    /**
+     * Display a list of all wedding folders.
+     */
+    public function index(): View
+    {
+        $folders = WeddingFolder::with('user')->withCount('photos')->latest()->paginate(15);
+
+        return view('admin.folders.index', compact('folders'));
+    }
+
+    /**
+     * Show the form for creating a new folder.
+     */
+    public function create(): View
+    {
+        $users = User::orderBy('name')->get();
+
+        return view('admin.folders.create', compact('users'));
+    }
+
+    /**
+     * Store a new folder for the chosen owner.
+     */
+    public function store(FolderRequest $request): RedirectResponse
+    {
+        $owner = User::findOrFail($request->validated('user_id'));
+
+        $folder = $owner->folders()->create($request->safe()->except('user_id'));
+
+        return redirect()
+            ->route('admin.folders.show', $folder)
+            ->with('success', 'The folder was created.');
+    }
+
+    /**
+     * Display one folder with its owner and photos.
+     */
+    public function show(WeddingFolder $folder): View
+    {
+        $folder->load('user', 'photos');
+
+        return view('admin.folders.show', compact('folder'));
+    }
+
+    /**
+     * Show the form for editing the folder.
+     */
+    public function edit(WeddingFolder $folder): View
+    {
+        return view('admin.folders.edit', compact('folder'));
+    }
+
+    /**
+     * Update the folder.
+     */
+    public function update(FolderRequest $request, WeddingFolder $folder): RedirectResponse
+    {
+        $folder->update($request->validated());
+
+        return redirect()
+            ->route('admin.folders.show', $folder)
+            ->with('success', 'The folder was updated.');
+    }
+
+    /**
+     * Delete the folder. Its photos stay in the gallery.
+     */
+    public function destroy(WeddingFolder $folder): RedirectResponse
+    {
+        $folder->delete();
+
+        return redirect()
+            ->route('admin.folders.index')
+            ->with('success', 'The folder was deleted.');
+    }
+}

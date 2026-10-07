@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\FolderController as AdminFolderController;
 use App\Http\Controllers\Admin\PhotoController as AdminPhotoController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\GalleryController;
@@ -61,4 +62,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::resource('photos', AdminPhotoController::class);
     Route::resource('users', AdminUserController::class);
+    Route::resource('folders', AdminFolderController::class);
 });
