@@ -44,7 +44,7 @@
                 </div>
             @empty
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 text-gray-500">
-                    You don't have a wedding folder yet.
+                    You don't have a wedding folder yet. Upload a photo or save one from the gallery, and a new folder is created for you.
                 </div>
             @endforelse
         </div>

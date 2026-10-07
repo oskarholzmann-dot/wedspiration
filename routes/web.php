@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/folders/{folder}', [FolderController::class, 'show'])->name('folders.show');
         Route::get('/folders/{folder}/edit', [FolderController::class, 'edit'])->name('folders.edit');
         Route::patch('/folders/{folder}', [FolderController::class, 'update'])->name('folders.update');
+        Route::delete('/folders/{folder}', [FolderController::class, 'destroy'])->name('folders.destroy');
 
         // Save any photo from the gallery into your own folder, or remove it again
         Route::post('/saved-photos/{photo}', [SavedPhotoController::class, 'store'])->name('saved-photos.store');

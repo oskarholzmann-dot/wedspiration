@@ -20,6 +20,22 @@
                     </div>
                 </form>
             </div>
+
+            <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900">Delete folder</h3>
+                <p class="mt-1 text-sm text-gray-600">
+                    Deletes this folder and the photos you uploaded into it, also from the public gallery.
+                    Photos you saved from other couples stay with them. This cannot be undone.
+                </p>
+
+                <form method="post" action="{{ route('user.folders.destroy', $folder) }}" class="mt-4"
+                      onsubmit="return confirm('Delete this folder and all photos you uploaded into it?')">
+                    @csrf
+                    @method('delete')
+
+                    <x-breeze.danger-button>Delete folder</x-breeze.danger-button>
+                </form>
+            </div>
         </div>
     </div>
 </x-app-layout>

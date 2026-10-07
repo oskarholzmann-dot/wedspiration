@@ -3,6 +3,8 @@
 use App\Models\Photo;
 use App\Models\User;
 use App\Models\WeddingFolder;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 test('guests are redirected from a folder to the login', function () {
     $folder = WeddingFolder::factory()->create();
@@ -60,6 +62,49 @@ test('a user cannot edit someone else\'s folder', function () {
     $this->actingAs($otherUser)->patch(route('user.folders.update', $folder), ['name' => 'Hacked'])->assertForbidden();
 
     expect($folder->fresh()->name)->toBe('Not yours');
+});
+
+test('deleting your folder deletes your uploads in it but not saved photos', function () {
+    Storage::fake('public');
+    $user = User::factory()->create();
+    $folder = WeddingFolder::factory()->for($user)->create();
+
+    $path = UploadedFile::fake()->image('mine.jpg')->store('photos', 'public');
+    $myPhoto = Photo::factory()->for($user)->create(['image_path' => $path]);
+    $savedPhoto = Photo::factory()->create();
+    $folder->photos()->attach([$myPhoto->id, $savedPhoto->id]);
+
+    $this->actingAs($user)
+        ->delete(route('user.folders.destroy', $folder))
+        ->assertRedirect(route('user.dashboard'))
+        ->assertSessionHas('success', 'Your folder and 1 uploaded photo were deleted.');
+
+    $this->assertModelMissing($folder);
+    $this->assertModelMissing($myPhoto);
+    $this->assertModelExists($savedPhoto);
+    Storage::disk('public')->assertMissing($path);
+});
+
+test('after deleting the folder, the next upload creates a new one', function () {
+    Storage::fake('public');
+    $user = User::factory()->create();
+    $folder = WeddingFolder::factory()->for($user)->create();
+
+    $this->actingAs($user)->delete(route('user.folders.destroy', $folder));
+    $this->actingAs($user)->post(route('user.photos.store'), ['image' => UploadedFile::fake()->image('new.jpg')]);
+
+    expect($user->folders()->count())->toBe(1)
+        ->and($user->folders()->first()->photos()->count())->toBe(1);
+});
+
+test('a user cannot delete someone else\'s folder', function () {
+    $folder = WeddingFolder::factory()->create();
+
+    $this->actingAs(User::factory()->create())
+        ->delete(route('user.folders.destroy', $folder))
+        ->assertForbidden();
+
+    $this->assertModelExists($folder);
 });
 
 test('a user cannot see someone else\'s folder', function () {

@@ -22,4 +22,12 @@ class WeddingFolderPolicy
     {
         return $folder->user_id === $user->id;
     }
+
+    /**
+     * Determine whether the user can delete the folder.
+     */
+    public function delete(User $user, WeddingFolder $folder): bool
+    {
+        return $folder->user_id === $user->id;
+    }
 }

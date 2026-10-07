@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateFolderRequest;
 use App\Models\WeddingFolder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class FolderController extends Controller
@@ -43,5 +44,27 @@ class FolderController extends Controller
         return redirect()
             ->route('user.folders.show', $folder)
             ->with('success', 'Your folder was updated.');
+    }
+
+    /**
+     * Delete the folder together with the photos the owner uploaded into it.
+     * Photos saved from other couples only lose the link; they stay with their owners.
+     */
+    public function destroy(WeddingFolder $folder): RedirectResponse
+    {
+        Gate::authorize('delete', $folder);
+
+        $ownUploads = $folder->photos()->where('photos.user_id', $folder->user_id)->get();
+
+        foreach ($ownUploads as $photo) {
+            $photo->deleteImageFile();
+            $photo->delete();
+        }
+
+        $folder->delete();
+
+        return redirect()
+            ->route('user.dashboard')
+            ->with('success', "Your folder and {$ownUploads->count()} uploaded ".Str::plural('photo', $ownUploads->count()).' were deleted.');
     }
 }
