@@ -24,7 +24,8 @@
                 <a href="{{ $categoryUrl(null) }}" @class([$pill, $pillActive => ! $activeCategory, $pillIdle => $activeCategory])>All</a>
                 @foreach ($categories as $category)
                     <a href="{{ $categoryUrl($category) }}"
-                       @class([$pill, $pillActive => $activeCategory === $category, $pillIdle => $activeCategory !== $category])>
+                       @if ($isAdmin) data-category-drop="{{ $category->value }}" @endif
+                       @class([$pill, 'transition data-[over=true]:scale-110 data-[over=true]:ring-2 data-[over=true]:ring-rose-700', $pillActive => $activeCategory === $category, $pillIdle => $activeCategory !== $category])>
                         {{ $category->label() }}
                     </a>
                 @endforeach
@@ -77,8 +78,24 @@
 
                 @if ($isAdmin)
                     <x-breeze.input-error :messages="$errors->get('name')" />
-                    <p class="text-xs text-stone-500">Admin: drag a photo onto a subcategory to move it there.</p>
                 @endif
+            @endif
+
+            @if ($isAdmin)
+                <!-- Admin: select several photos, then drag them together onto a category or subcategory -->
+                <div class="flex flex-wrap items-center gap-3 text-sm">
+                    <button type="button" data-select-toggle aria-pressed="false" data-sort-url="{{ route('admin.photos.sort') }}"
+                            class="rounded-full px-3 py-1 ring-1 ring-stone-300 bg-white text-stone-700 hover:bg-stone-100 aria-pressed:bg-rose-700 aria-pressed:text-white aria-pressed:ring-rose-700">
+                        Select photos
+                    </button>
+                    <span data-selection-info hidden class="text-stone-700">
+                        <span data-selection-count>0</span> selected
+                        &middot; <button type="button" data-selection-clear class="underline hover:text-stone-900">Clear</button>
+                    </span>
+                    <span class="text-xs text-stone-500">
+                        Drag photos onto a category or subcategory to sort them. Shift-click selects several.
+                    </span>
+                </div>
             @endif
         </div>
 
@@ -95,7 +112,8 @@
         @else
             <div class="mt-6 columns-2 gap-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6"
                  data-infinite data-next="{{ $photos->nextPageUrl() }}"
-                 @if ($activeSubcategory) data-active-subcategory="{{ $activeSubcategory->id }}" @endif>
+                 @if ($activeSubcategory) data-active-subcategory="{{ $activeSubcategory->id }}" @endif
+                 @if ($activeCategory) data-active-category="{{ $activeCategory->value }}" @endif>
                 @foreach ($photos as $photo)
                     <x-photo-card :photo="$photo" />
                 @endforeach
@@ -108,6 +126,6 @@
     </section>
 
     @if ($isAdmin)
-        <x-script src="js/admin-subcategories.js" />
+        <x-script src="js/admin-sorting.js" />
     @endif
 </x-public-layout>

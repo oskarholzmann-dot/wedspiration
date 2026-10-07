@@ -8,14 +8,14 @@
 
 {{-- One photo as a tile in its own shape (no cropping). A click opens it large in the lightbox (public/js/lightbox.js);
      without JavaScript the link simply opens the photo page. --}}
-<div class="group relative mb-2 break-inside-avoid"
+<div class="group relative mb-2 break-inside-avoid rounded-md data-[selected=true]:outline-4 data-[selected=true]:outline-offset-2 data-[selected=true]:outline-rose-600"
      data-photo-card
      data-lightbox-src="{{ $photo->image_url }}"
      data-title="{{ $photo->title }}"
      data-category="{{ $photo->category?->label() }}"
      data-meta="Shared by {{ $photo->user->name }}"
      data-page-url="{{ route('gallery.show', $photo) }}"
-     @if (auth()->user()?->is_admin) data-delete-url="{{ route('admin.photos.destroy', $photo) }}" data-assign-url="{{ route('admin.photos.subcategory', $photo) }}" @endif
+     @if (auth()->user()?->is_admin) data-delete-url="{{ route('admin.photos.destroy', $photo) }}" data-assign-url="{{ route('admin.photos.subcategory', $photo) }}" data-photo-id="{{ $photo->id }}" @endif
      @if ($canSave) draggable="true" data-save-url="{{ route('user.saved-photos.store', $photo) }}" @endif>
     <a href="{{ route('gallery.show', $photo) }}" draggable="false" data-lightbox-open
        class="block overflow-hidden rounded-md bg-stone-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-700 focus-visible:ring-offset-2">
@@ -29,6 +29,11 @@
             <span class="block text-sm font-medium leading-snug">{{ $photo->title }}</span>
         </span>
     </a>
+
+    {{-- Shown while the photo is selected (admins sort several photos at once) --}}
+    <span class="pointer-events-none absolute bottom-2 left-2 hidden h-7 w-7 items-center justify-center rounded-full bg-rose-600 text-white shadow group-data-[selected=true]:flex" aria-hidden="true">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+    </span>
 
     @if (auth()->user()?->is_admin)
         {{-- Admins can delete any photo right here; without JavaScript this is a normal form --}}

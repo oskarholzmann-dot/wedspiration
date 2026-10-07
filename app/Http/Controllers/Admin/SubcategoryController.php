@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\PhotoCategory;
 use App\Http\Controllers\Controller;
 use App\Models\Photo;
 use App\Models\Subcategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class SubcategoryController extends Controller
 {
@@ -35,6 +38,38 @@ class SubcategoryController extends Controller
         return redirect()
             ->route('gallery.index')
             ->with('success', "Subcategory \"{$subcategory->name}\" deleted. Its photos are still in the gallery.");
+    }
+
+    /**
+     * Move a group of photos at once: into a subcategory, or into one of the categories.
+     * Used when several selected photos are dragged together in the gallery.
+     */
+    public function sortMany(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'photos' => ['required', 'array'],
+            'photos.*' => ['integer', 'exists:photos,id'],
+            // Exactly one target: a subcategory or a category
+            'subcategory_id' => ['required_without:category', 'prohibits:category', 'integer', 'exists:subcategories,id'],
+            'category' => ['required_without:subcategory_id', Rule::enum(PhotoCategory::class)],
+        ]);
+
+        $photos = Photo::whereIn('id', $validated['photos']);
+
+        if (isset($validated['subcategory_id'])) {
+            $photos->update(['subcategory_id' => $validated['subcategory_id']]);
+            $target = Subcategory::find($validated['subcategory_id'])->name;
+        } else {
+            $photos->update(['category' => $validated['category']]);
+            $target = PhotoCategory::from($validated['category'])->label();
+        }
+
+        $count = count($validated['photos']);
+
+        return response()->json([
+            'message' => "{$count} ".Str::plural('photo', $count)." moved to {$target}.",
+            'counts' => Subcategory::withCount('photos')->pluck('photos_count', 'id'),
+        ]);
     }
 
     /**

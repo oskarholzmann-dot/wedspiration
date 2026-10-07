@@ -75,6 +75,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('subcategories', [AdminSubcategoryController::class, 'store'])->name('subcategories.store');
     Route::delete('subcategories/{subcategory}', [AdminSubcategoryController::class, 'destroy'])->name('subcategories.destroy');
     Route::patch('photos/{photo}/subcategory', [AdminSubcategoryController::class, 'assign'])->name('photos.subcategory');
+    Route::patch('photos/sort', [AdminSubcategoryController::class, 'sortMany'])->name('photos.sort');
 
     Route::resource('photos', AdminPhotoController::class);
     Route::resource('users', AdminUserController::class);
