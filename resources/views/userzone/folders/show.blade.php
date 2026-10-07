@@ -39,7 +39,7 @@
                     No photos yet - upload your first inspiration.
                 </div>
             @else
-                <div class="columns-2 gap-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6">
+                <div class="columns-2 gap-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6" data-masonry>
                     @foreach ($photos as $photo)
                         <x-photo-card :photo="$photo" />
                     @endforeach

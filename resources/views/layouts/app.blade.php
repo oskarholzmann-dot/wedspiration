@@ -44,6 +44,7 @@
 
     @include('partials.lightbox')
 
+    <x-script src="js/masonry.js" />
     <x-script src="js/save-photos.js" />
     <x-script src="js/lightbox.js" />
 </div>

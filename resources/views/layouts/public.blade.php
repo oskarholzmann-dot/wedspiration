@@ -41,6 +41,7 @@
 
     @include('partials.lightbox')
 
+    <x-script src="js/masonry.js" />
     <x-script src="js/infinite-scroll.js" />
     <x-script src="js/lightbox.js" />
 

@@ -38,7 +38,13 @@ if (list) {
             const page = new DOMParser().parseFromString(await response.text(), 'text/html');
             const nextList = page.querySelector('[data-infinite]');
 
-            list.append(...nextList.children);
+            const items = [...nextList.children];
+
+            // A masonry grid places new items itself (without moving the old ones); otherwise just append
+            const event = new CustomEvent('masonry:append', { detail: { items }, cancelable: true });
+            if (list.dispatchEvent(event)) {
+                list.append(...items);
+            }
             nextUrl = nextList.dataset.next || null;
             sentinel.textContent = '';
         } catch {

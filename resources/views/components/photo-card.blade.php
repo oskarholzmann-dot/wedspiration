@@ -4,12 +4,14 @@
     // Logged-in users can save any photo into their folder (button, or drag onto the drop zone)
     $canSave = auth()->check();
     $saved = $canSave && in_array($photo->id, auth()->user()->savedPhotoIds());
+    $size = $photo->image_size;
 @endphp
 
 {{-- One photo as a tile in its own shape (no cropping). A click opens it large in the lightbox (public/js/lightbox.js);
      without JavaScript the link simply opens the photo page. --}}
 <div class="group relative mb-2 break-inside-avoid rounded-md data-[selected=true]:outline-4 data-[selected=true]:outline-offset-2 data-[selected=true]:outline-rose-600"
      data-photo-card
+     data-ratio="{{ round($size['height'] / $size['width'], 4) }}"
      data-lightbox-src="{{ $photo->image_url }}"
      data-title="{{ $photo->title }}"
      data-category="{{ $photo->category?->label() }}"
@@ -19,7 +21,9 @@
      @if ($canSave) draggable="true" data-save-url="{{ route('user.saved-photos.store', $photo) }}" @endif>
     <a href="{{ route('gallery.show', $photo) }}" draggable="false" data-lightbox-open
        class="block overflow-hidden rounded-md bg-stone-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-700 focus-visible:ring-offset-2">
+        {{-- width/height let the browser reserve the right space before the image has loaded --}}
         <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" loading="lazy" draggable="false"
+             width="{{ $size['width'] }}" height="{{ $size['height'] }}"
              class="block h-auto w-full transition duration-300 group-hover:scale-105">
 
         <span class="pointer-events-none absolute inset-x-0 bottom-0 rounded-b-md bg-gradient-to-t from-black/70 to-transparent p-3 pt-10 text-white opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100">

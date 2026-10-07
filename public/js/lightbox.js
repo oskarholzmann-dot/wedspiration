@@ -60,7 +60,9 @@ if (box) {
     }
 
     function open(tile) {
-        tiles = [...document.querySelectorAll('[data-photo-card][data-lightbox-src]')];
+        // In the masonry layout the page order is per column, so use the photos' reading order
+        tiles = [...document.querySelectorAll('[data-photo-card][data-lightbox-src]')]
+            .sort((a, b) => Number(a.dataset.order ?? 0) - Number(b.dataset.order ?? 0));
         openedFrom = document.activeElement;
         show(tiles.indexOf(tile));
         box.hidden = false;

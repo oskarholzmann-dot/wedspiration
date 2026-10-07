@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -66,6 +67,28 @@ class Photo extends Model
             Str::startsWith($this->image_path, 'images/seed/') => asset($this->image_path),
             default => Storage::disk('public')->url($this->image_path),
         });
+    }
+
+    /**
+     * Width and height of the image in pixels, read once from the file and then remembered.
+     * Lets the gallery reserve the right space before the image has loaded (no jumping layout).
+     *
+     * @return Attribute<array{width: int, height: int}, never>
+     */
+    protected function imageSize(): Attribute
+    {
+        return Attribute::get(fn () => Cache::rememberForever('photo-size:'.$this->image_path, function () {
+            $file = match (true) {
+                Str::startsWith($this->image_path, ['http://', 'https://']) => null,
+                Str::startsWith($this->image_path, 'images/seed/') => public_path($this->image_path),
+                default => Storage::disk('public')->path($this->image_path),
+            };
+
+            $size = $file && is_file($file) ? getimagesize($file) : false;
+
+            // Unknown (external link or missing file): assume a typical 4:3 photo
+            return $size ? ['width' => $size[0], 'height' => $size[1]] : ['width' => 1200, 'height' => 900];
+        }));
     }
 
     /**

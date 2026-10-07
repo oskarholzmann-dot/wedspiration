@@ -112,7 +112,7 @@
                 @endif
             </p>
         @else
-            <div class="mt-6 columns-2 gap-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6"
+            <div class="mt-6 columns-2 gap-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6" data-masonry
                  data-infinite data-next="{{ $photos->nextPageUrl() }}"
                  @if ($activeSubcategory) data-active-subcategory="{{ $activeSubcategory->id }}" @endif
                  @if ($activeCategory) data-active-category="{{ $activeCategory->value }}" @endif>
