@@ -96,8 +96,7 @@ class UserController extends Controller
             return back()->withErrors(['user' => 'You cannot delete your own account here.']);
         }
 
-        // Folders and photos are removed by the database (cascade), the files are not
-        $user->photos->each->deleteImageFile();
+        // Folders, photos and image files are removed too (see User::booted())
         $user->delete();
 
         return redirect()

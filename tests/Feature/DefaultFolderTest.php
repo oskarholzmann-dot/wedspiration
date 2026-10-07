@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Photo;
 use App\Models\User;
 use App\Models\WeddingFolder;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 test('a new user gets a wedding folder when registering', function () {
     $this->post('/register', [
@@ -23,6 +26,20 @@ test('default folder returns the existing folder', function () {
 
     expect($user->defaultFolder()->is($folder))->toBeTrue()
         ->and($user->folders()->count())->toBe(1);
+});
+
+test('deleting your own account also deletes your image files', function () {
+    Storage::fake('public');
+    $user = User::factory()->create();
+    $path = UploadedFile::fake()->image('photo.jpg')->store('photos', 'public');
+    Photo::factory()->for($user)->create(['image_path' => $path]);
+
+    $this->actingAs($user)
+        ->delete('/profile', ['password' => 'password'])
+        ->assertRedirect('/');
+
+    $this->assertModelMissing($user);
+    Storage::disk('public')->assertMissing($path);
 });
 
 test('default folder creates a folder when the user has none', function () {

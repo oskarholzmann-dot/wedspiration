@@ -35,6 +35,17 @@ class User extends Authenticatable
     ];
 
     /**
+     * Register model events.
+     */
+    protected static function booted(): void
+    {
+        // The database deletes the user's photos (cascade), but not their image files
+        static::deleting(function (User $user) {
+            $user->photos->each->deleteImageFile();
+        });
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
