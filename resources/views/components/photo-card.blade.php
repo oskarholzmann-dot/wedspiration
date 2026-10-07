@@ -15,7 +15,7 @@
      data-category="{{ $photo->category?->label() }}"
      data-meta="Shared by {{ $photo->user->name }}"
      data-page-url="{{ route('gallery.show', $photo) }}"
-     @if (auth()->user()?->is_admin) data-delete-url="{{ route('admin.photos.destroy', $photo) }}" @endif
+     @if (auth()->user()?->is_admin) data-delete-url="{{ route('admin.photos.destroy', $photo) }}" data-assign-url="{{ route('admin.photos.subcategory', $photo) }}" @endif
      @if ($canSave) draggable="true" data-save-url="{{ route('user.saved-photos.store', $photo) }}" @endif>
     <a href="{{ route('gallery.show', $photo) }}" draggable="false" data-lightbox-open
        class="block overflow-hidden rounded-md bg-stone-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-700 focus-visible:ring-offset-2">

@@ -53,7 +53,7 @@ All seeded accounts use the password **`password`**.
 | **Public** | Welcome page with the latest photos, gallery with a Photos / Folders switch and category filter, photo and folder pages, about & contact |
 | **Account** | Register, log in, edit profile (Laravel Breeze). Every new user gets a wedding folder automatically. |
 | **Userzone** | Dashboard, folder page, rename your folder, upload many photos at once (large photos are shrunk in the browser), edit/replace/delete your own photos |
-| **Admin** | Dashboard with counts, full CRUD for photos, users and folders |
+| **Admin** | Dashboard with counts, full CRUD for photos, users and folders, bulk delete, subcategories with drag and drop in the gallery |
 
 ## Data model
 
@@ -61,11 +61,13 @@ All seeded accounts use the password **`password`**.
 User ──1-N──> WeddingFolder   (name, notes, wedding_date)
 User ──1-N──> Photo           (title, description, category, image_path)
 WeddingFolder <──N-M──> Photo (pivot table: folder_photo)
+Subcategory ──1-N──> Photo    (name; photos.subcategory_id is optional)
 ```
 
 - An uploaded photo is automatically attached to its owner's folder (`User::defaultFolder()`).
 - Photo categories live in one place: the `App\Enums\PhotoCategory` enum.
 - `User::is_admin` marks administrators.
+- Admins create subcategories in the gallery and drag photos onto them; each photo is in at most one subcategory.
 
 ## Routes
 

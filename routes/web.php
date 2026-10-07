@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\FolderController as AdminFolderController;
 use App\Http\Controllers\Admin\PhotoController as AdminPhotoController;
+use App\Http\Controllers\Admin\SubcategoryController as AdminSubcategoryController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PageController;
@@ -69,6 +70,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/', AdminDashboardController::class)->name('dashboard');
 
     Route::delete('photos', [AdminPhotoController::class, 'bulkDestroy'])->name('photos.bulk-destroy');
+
+    // Subcategories are created, filled (drag and drop) and deleted right in the gallery
+    Route::post('subcategories', [AdminSubcategoryController::class, 'store'])->name('subcategories.store');
+    Route::delete('subcategories/{subcategory}', [AdminSubcategoryController::class, 'destroy'])->name('subcategories.destroy');
+    Route::patch('photos/{photo}/subcategory', [AdminSubcategoryController::class, 'assign'])->name('photos.subcategory');
+
     Route::resource('photos', AdminPhotoController::class);
     Route::resource('users', AdminUserController::class);
     Route::delete('folders', [AdminFolderController::class, 'bulkDestroy'])->name('folders.bulk-destroy');

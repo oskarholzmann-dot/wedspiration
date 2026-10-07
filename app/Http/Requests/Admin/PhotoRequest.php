@@ -33,6 +33,7 @@ class PhotoRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:2000'],
             'category' => ['nullable', Rule::enum(PhotoCategory::class)],
+            'subcategory_id' => ['nullable', 'integer', 'exists:subcategories,id'],
             'image' => [$isCreating ? 'required' : 'nullable', 'image', 'max:2048'],
         ];
     }

@@ -6,6 +6,7 @@ use App\Enums\PhotoCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PhotoRequest;
 use App\Models\Photo;
+use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -32,8 +33,9 @@ class PhotoController extends Controller
     {
         $users = User::orderBy('name')->get();
         $categories = PhotoCategory::cases();
+        $subcategories = Subcategory::orderBy('name')->get();
 
-        return view('admin.photos.create', compact('users', 'categories'));
+        return view('admin.photos.create', compact('users', 'categories', 'subcategories'));
     }
 
     /**
@@ -71,8 +73,9 @@ class PhotoController extends Controller
     public function edit(Photo $photo): View
     {
         $categories = PhotoCategory::cases();
+        $subcategories = Subcategory::orderBy('name')->get();
 
-        return view('admin.photos.edit', compact('photo', 'categories'));
+        return view('admin.photos.edit', compact('photo', 'categories', 'subcategories'));
     }
 
     /**

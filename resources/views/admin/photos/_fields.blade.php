@@ -27,6 +27,20 @@
 </div>
 
 <div>
+    <x-breeze.input-label for="subcategory_id" value="Subcategory (optional)" />
+    <select id="subcategory_id" name="subcategory_id"
+            class="mt-1 block w-full border border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-xs px-2 py-1">
+        <option value="">- No subcategory -</option>
+        @foreach ($subcategories as $subcategory)
+            <option value="{{ $subcategory->id }}" @selected((string) old('subcategory_id', $photo->subcategory_id ?? '') === (string) $subcategory->id)>
+                {{ $subcategory->name }}
+            </option>
+        @endforeach
+    </select>
+    <x-breeze.input-error class="mt-2" :messages="$errors->get('subcategory_id')" />
+</div>
+
+<div>
     <x-breeze.input-label for="image" :value="isset($photo) ? 'Replace image (optional, max. 2 MB)' : 'Image (max. 2 MB)'" />
     <input id="image" name="image" type="file" accept="image/*" @required(! isset($photo))
            class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:rounded-md file:border-0 file:bg-gray-800 file:px-4 file:py-2 file:text-white hover:file:bg-gray-700">

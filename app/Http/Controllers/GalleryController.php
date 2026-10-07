@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\PhotoCategory;
 use App\Models\Photo;
+use App\Models\Subcategory;
 use App\Models\WeddingFolder;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -15,18 +16,21 @@ class GalleryController extends Controller
      */
     public function index(Request $request): View
     {
-        // Unknown categories in the URL are simply ignored
+        // Unknown categories or subcategories in the URL are simply ignored
         $activeCategory = PhotoCategory::tryFrom((string) $request->query('category'));
+        $activeSubcategory = Subcategory::find($request->integer('subcategory') ?: null);
 
         $photos = Photo::with('user')
             ->when($activeCategory, fn ($query) => $query->where('category', $activeCategory))
+            ->when($activeSubcategory, fn ($query) => $query->whereBelongsTo($activeSubcategory))
             ->newestFirst()
             ->paginate(24)
             ->withQueryString();
 
         $categories = PhotoCategory::cases();
+        $subcategories = Subcategory::withCount('photos')->orderBy('name')->get();
 
-        return view('gallery.index', compact('photos', 'categories', 'activeCategory'));
+        return view('gallery.index', compact('photos', 'categories', 'activeCategory', 'subcategories', 'activeSubcategory'));
     }
 
     /**
