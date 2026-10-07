@@ -38,7 +38,7 @@
                 @endif
             </p>
         @else
-            <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" data-infinite data-next="{{ $photos->nextPageUrl() }}">
+            <div class="mt-8 columns-2 gap-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6" data-infinite data-next="{{ $photos->nextPageUrl() }}">
                 @foreach ($photos as $photo)
                     <x-photo-card :photo="$photo" />
                 @endforeach

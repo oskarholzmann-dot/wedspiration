@@ -33,7 +33,7 @@
         @if ($latestPhotos->isEmpty())
             <p class="mt-8 text-stone-500">No photos yet - be the first to share your inspiration.</p>
         @else
-            <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div class="mt-8 columns-2 gap-2 sm:columns-3 lg:columns-4">
                 @foreach ($latestPhotos as $photo)
                     <x-photo-card :photo="$photo" />
                 @endforeach
