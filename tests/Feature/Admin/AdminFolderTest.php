@@ -80,6 +80,52 @@ test('the folder list has a delete button for every folder', function () {
     }
 });
 
+test('several folders can be deleted at once, their photos stay', function () {
+    [$first, $second, $kept] = WeddingFolder::factory()->count(3)->create();
+    $photo = Photo::factory()->for($first->user)->create();
+    $first->photos()->attach($photo);
+
+    $this->actingAs($this->admin)
+        ->delete(route('admin.folders.bulk-destroy'), ['folders' => [$first->id, $second->id]])
+        ->assertRedirect(route('admin.folders.index'))
+        ->assertSessionHas('success', '2 folders deleted.');
+
+    $this->assertModelMissing($first);
+    $this->assertModelMissing($second);
+    $this->assertModelExists($kept);
+    $this->assertModelExists($photo);
+});
+
+test('bulk delete can also delete the owners\' photos in those folders', function () {
+    $folder = WeddingFolder::factory()->create();
+    $ownPhoto = Photo::factory()->for($folder->user)->create();
+    $savedPhoto = Photo::factory()->create();
+    $folder->photos()->attach([$ownPhoto->id, $savedPhoto->id]);
+
+    $this->actingAs($this->admin)
+        ->delete(route('admin.folders.bulk-destroy'), ['folders' => [$folder->id], 'with_photos' => '1'])
+        ->assertSessionHas('success', '1 folder deleted together with 1 photo.');
+
+    $this->assertModelMissing($ownPhoto);
+    $this->assertModelExists($savedPhoto);
+});
+
+test('bulk delete needs at least one folder', function () {
+    $this->actingAs($this->admin)
+        ->delete(route('admin.folders.bulk-destroy'), [])
+        ->assertSessionHasErrors('folders');
+});
+
+test('regular users cannot bulk delete', function () {
+    $folder = WeddingFolder::factory()->create();
+
+    $this->actingAs(User::factory()->create())
+        ->delete(route('admin.folders.bulk-destroy'), ['folders' => [$folder->id]])
+        ->assertForbidden();
+
+    $this->assertModelExists($folder);
+});
+
 test('destroy deletes the folder but keeps its photos', function () {
     $folder = WeddingFolder::factory()->create();
     $photo = Photo::factory()->for($folder->user)->create();

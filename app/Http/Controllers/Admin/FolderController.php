@@ -7,6 +7,8 @@ use App\Http\Requests\Admin\FolderRequest;
 use App\Models\User;
 use App\Models\WeddingFolder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class FolderController extends Controller
@@ -73,6 +75,44 @@ class FolderController extends Controller
         return redirect()
             ->route('admin.folders.show', $folder)
             ->with('success', 'The folder was updated.');
+    }
+
+    /**
+     * Delete several folders at once (the ticked checkboxes in the list).
+     * Optionally also delete the photos their owners uploaded into them.
+     */
+    public function bulkDestroy(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'folders' => ['required', 'array'],
+            'folders.*' => ['integer', 'exists:wedding_folders,id'],
+            'with_photos' => ['boolean'],
+        ], [
+            'folders.required' => 'Tick at least one folder to delete.',
+        ]);
+
+        $folders = WeddingFolder::whereIn('id', $validated['folders'])->get();
+        $deletedPhotos = 0;
+
+        foreach ($folders as $folder) {
+            if ($request->boolean('with_photos')) {
+                $ownUploads = $folder->photos()->where('photos.user_id', $folder->user_id)->get();
+
+                foreach ($ownUploads as $photo) {
+                    $photo->deleteImageFile();
+                    $photo->delete();
+                    $deletedPhotos++;
+                }
+            }
+
+            $folder->delete();
+        }
+
+        $message = $folders->count().' '.Str::plural('folder', $folders->count()).' deleted'
+            .($request->boolean('with_photos') ? " together with {$deletedPhotos} ".Str::plural('photo', $deletedPhotos) : '')
+            .'.';
+
+        return redirect()->route('admin.folders.index')->with('success', $message);
     }
 
     /**
