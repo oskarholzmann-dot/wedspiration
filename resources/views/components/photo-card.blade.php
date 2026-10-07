@@ -37,6 +37,8 @@
               onsubmit="return confirm(@js('Delete "'.$photo->title.'" for everyone? This cannot be undone.'))">
             @csrf
             @method('delete')
+            {{-- Without JavaScript: come back to this page instead of the admin list --}}
+            <input type="hidden" name="return_to_previous" value="1">
             <button type="submit" title="Delete this photo (admin)"
                     class="rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-red-700 shadow-sm ring-1 ring-red-200 hover:bg-red-600 hover:text-white hover:ring-red-600">
                 Delete

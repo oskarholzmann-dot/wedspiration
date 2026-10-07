@@ -141,6 +141,24 @@ test('regular users and guests see no delete buttons in the gallery', function (
         ->assertDontSee('data-lightbox-delete', false);
 });
 
+test('deleting from the gallery without JavaScript returns to the gallery', function () {
+    $photo = Photo::factory()->create();
+
+    $this->actingAs($this->admin)
+        ->from(route('gallery.index'))
+        ->delete(route('admin.photos.destroy', $photo), ['return_to_previous' => '1'])
+        ->assertRedirect(route('gallery.index'))
+        ->assertSessionHas('success');
+
+    $this->assertModelMissing($photo);
+});
+
+test('scripts are loaded with a version so browsers fetch new versions', function () {
+    $this->actingAs($this->admin)
+        ->get(route('gallery.index'))
+        ->assertSee('js/save-photos.js?v='.filemtime(public_path('js/save-photos.js')), false);
+});
+
 test('deleting from the gallery gets a JSON answer', function () {
     $photo = Photo::factory()->create();
 

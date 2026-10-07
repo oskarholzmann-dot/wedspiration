@@ -131,6 +131,11 @@ class PhotoController extends Controller
             return response()->json(['deleted' => true]);
         }
 
+        // Deleted from the gallery: go back there, not to the admin list
+        if ($request->boolean('return_to_previous')) {
+            return back()->with('success', 'The photo was deleted.');
+        }
+
         return redirect()
             ->route('admin.photos.index')
             ->with('success', 'The photo was deleted.');

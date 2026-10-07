@@ -41,8 +41,8 @@
 
     @include('partials.lightbox')
 
-    <script src="{{ asset('js/infinite-scroll.js') }}" defer></script>
-    <script src="{{ asset('js/lightbox.js') }}" defer></script>
+    <x-script src="js/infinite-scroll.js" />
+    <x-script src="js/lightbox.js" />
 
     @auth
         <!-- Appears while a photo is dragged: drop it here to save it into your folder -->
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <script src="{{ asset('js/save-photos.js') }}" defer></script>
+        <x-script src="js/save-photos.js" />
     @endauth
 
     <footer class="border-t border-stone-200 bg-white">

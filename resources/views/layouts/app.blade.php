@@ -44,8 +44,8 @@
 
     @include('partials.lightbox')
 
-    <script src="{{ asset('js/save-photos.js') }}" defer></script>
-    <script src="{{ asset('js/lightbox.js') }}" defer></script>
+    <x-script src="js/save-photos.js" />
+    <x-script src="js/lightbox.js" />
 </div>
 </body>
 </html>

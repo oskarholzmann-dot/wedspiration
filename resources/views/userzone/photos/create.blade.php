@@ -61,5 +61,5 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/photo-upload.js') }}" defer></script>
+    <x-script src="js/photo-upload.js" />
 </x-app-layout>
