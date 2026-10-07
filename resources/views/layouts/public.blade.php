@@ -39,6 +39,8 @@
         {{ $slot }}
     </main>
 
+    <script src="{{ asset('js/infinite-scroll.js') }}" defer></script>
+
     @auth
         <!-- Appears while a photo is dragged: drop it here to save it into your folder -->
         <div data-drop-zone hidden data-over="false"

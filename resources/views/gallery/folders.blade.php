@@ -10,7 +10,7 @@
         @if ($folders->isEmpty())
             <p class="mt-8 text-stone-500">No folders with photos yet.</p>
         @else
-            <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-infinite data-next="{{ $folders->nextPageUrl() }}">
                 @foreach ($folders as $folder)
                     <a href="{{ route('gallery.folders.show', $folder) }}"
                        class="group block overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-stone-200 hover:shadow-md transition">
@@ -29,7 +29,7 @@
                 @endforeach
             </div>
 
-            <div class="mt-10">
+            <div class="mt-10" data-pager>
                 {{ $folders->links() }}
             </div>
         @endif

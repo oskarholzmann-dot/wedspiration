@@ -21,7 +21,7 @@ class GalleryController extends Controller
         $photos = Photo::with('user')
             ->when($activeCategory, fn ($query) => $query->where('category', $activeCategory))
             ->newestFirst()
-            ->paginate(12)
+            ->paginate(24)
             ->withQueryString();
 
         $categories = PhotoCategory::cases();
@@ -49,7 +49,7 @@ class GalleryController extends Controller
             ->withCount('photos')
             ->with(['photos' => fn ($query) => $query->newestFirst()->limit(1)])
             ->latest('id')
-            ->paginate(12);
+            ->paginate(24);
 
         return view('gallery.folders', compact('folders'));
     }

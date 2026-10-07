@@ -4,6 +4,9 @@
  * - Every "Save" button (form[data-save-form]) toggles between saved and not saved.
  * - Photo cards ([data-photo-card]) can be dragged onto the drop zone ([data-drop-zone]),
  *   which appears at the bottom of the screen while you drag.
+ *
+ * The listeners sit on the whole document ("event delegation"), so they also work
+ * for photos that infinite scrolling adds later.
  */
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -31,19 +34,21 @@ function markSaved(url, saved) {
     });
 }
 
-document.querySelectorAll('form[data-save-form]').forEach((form) => {
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
+document.addEventListener('submit', async (event) => {
+    const form = event.target.closest('form[data-save-form]');
+    if (!form) {
+        return;
+    }
 
-        const saved = form.querySelector('button').dataset.saved === 'true';
+    event.preventDefault();
+    const saved = form.querySelector('button').dataset.saved === 'true';
 
-        try {
-            const result = await send(form.action, saved ? 'DELETE' : 'POST');
-            markSaved(form.action, result.saved);
-        } catch (error) {
-            alert(error.message);
-        }
-    });
+    try {
+        const result = await send(form.action, saved ? 'DELETE' : 'POST');
+        markSaved(form.action, result.saved);
+    } catch (error) {
+        alert(error.message);
+    }
 });
 
 const dropZone = document.querySelector('[data-drop-zone]');
@@ -51,22 +56,32 @@ const dropZone = document.querySelector('[data-drop-zone]');
 if (dropZone) {
     const message = dropZone.querySelector('[data-drop-message]');
     const defaultText = message.textContent;
+    let hideTimer = null;
 
-    document.querySelectorAll('[data-photo-card]').forEach((card) => {
-        card.addEventListener('dragstart', (event) => {
-            event.dataTransfer.setData('text/plain', card.dataset.saveUrl);
-            event.dataTransfer.effectAllowed = 'copy';
-            dropZone.hidden = false;
-        });
+    document.addEventListener('dragstart', (event) => {
+        const card = event.target.closest('[data-photo-card]');
+        if (!card) {
+            return;
+        }
 
-        card.addEventListener('dragend', () => {
-            // Leave a moment to read the confirmation before the zone disappears
-            setTimeout(() => {
-                dropZone.hidden = true;
-                dropZone.dataset.over = 'false';
-                message.textContent = defaultText;
-            }, 1200);
-        });
+        event.dataTransfer.setData('text/plain', card.dataset.saveUrl);
+        event.dataTransfer.effectAllowed = 'copy';
+        clearTimeout(hideTimer);
+        message.textContent = defaultText;
+        dropZone.hidden = false;
+    });
+
+    document.addEventListener('dragend', (event) => {
+        if (!event.target.closest('[data-photo-card]')) {
+            return;
+        }
+
+        // Leave a moment to read the confirmation before the zone disappears
+        hideTimer = setTimeout(() => {
+            dropZone.hidden = true;
+            dropZone.dataset.over = 'false';
+            message.textContent = defaultText;
+        }, 1200);
     });
 
     dropZone.addEventListener('dragover', (event) => {
