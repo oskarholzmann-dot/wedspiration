@@ -25,7 +25,7 @@
                         <x-breeze.input-error class="mt-2" :messages="$errors->get('user_id')" />
                     </div>
 
-                    @include('admin.folders._fields')
+                    @include('partials.folder-fields')
 
                     <div class="flex items-center gap-4">
                         <x-breeze.primary-button>Create</x-breeze.primary-button>

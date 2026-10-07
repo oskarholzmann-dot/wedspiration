@@ -14,4 +14,12 @@ class WeddingFolderPolicy
     {
         return $folder->user_id === $user->id;
     }
+
+    /**
+     * Determine whether the user can edit the folder.
+     */
+    public function update(User $user, WeddingFolder $folder): bool
+    {
+        return $folder->user_id === $user->id;
+    }
 }
