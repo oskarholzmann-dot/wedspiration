@@ -8,6 +8,8 @@ use App\Http\Requests\Admin\PhotoRequest;
 use App\Models\Photo;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class PhotoController extends Controller
@@ -89,6 +91,30 @@ class PhotoController extends Controller
         return redirect()
             ->route('admin.photos.show', $photo)
             ->with('success', 'The photo was updated.');
+    }
+
+    /**
+     * Delete several photos at once (the ticked checkboxes in the list), image files included.
+     */
+    public function bulkDestroy(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'photos' => ['required', 'array'],
+            'photos.*' => ['integer', 'exists:photos,id'],
+        ], [
+            'photos.required' => 'Tick at least one photo to delete.',
+        ]);
+
+        $photos = Photo::whereIn('id', $validated['photos'])->get();
+
+        foreach ($photos as $photo) {
+            $photo->deleteImageFile();
+            $photo->delete();
+        }
+
+        return redirect()
+            ->route('admin.photos.index')
+            ->with('success', $photos->count().' '.Str::plural('photo', $photos->count()).' deleted.');
     }
 
     /**

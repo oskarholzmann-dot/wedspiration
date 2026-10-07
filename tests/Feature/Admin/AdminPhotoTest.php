@@ -119,6 +119,47 @@ test('update cannot change the owner', function () {
     expect($photo->fresh()->user_id)->toBe($originalOwner);
 });
 
+test('the photo list has a delete button for every photo', function () {
+    $photos = Photo::factory()->count(2)->create();
+
+    $response = $this->actingAs($this->admin)->get(route('admin.photos.index'));
+
+    foreach ($photos as $photo) {
+        $response->assertSee('action="'.route('admin.photos.destroy', $photo).'"', false);
+    }
+});
+
+test('several photos can be deleted at once, files included', function () {
+    $path = UploadedFile::fake()->image('upload.jpg')->store('photos', 'public');
+    $first = Photo::factory()->create(['image_path' => $path]);
+    $second = Photo::factory()->create();
+    $kept = Photo::factory()->create();
+
+    $this->actingAs($this->admin)
+        ->delete(route('admin.photos.bulk-destroy'), ['photos' => [$first->id, $second->id]])
+        ->assertRedirect(route('admin.photos.index'))
+        ->assertSessionHas('success', '2 photos deleted.');
+
+    $this->assertModelMissing($first);
+    $this->assertModelMissing($second);
+    $this->assertModelExists($kept);
+    Storage::disk('public')->assertMissing($path);
+});
+
+test('bulk delete needs at least one photo and is admin only', function () {
+    $photo = Photo::factory()->create();
+
+    $this->actingAs($this->admin)
+        ->delete(route('admin.photos.bulk-destroy'), [])
+        ->assertSessionHasErrors('photos');
+
+    $this->actingAs(User::factory()->create())
+        ->delete(route('admin.photos.bulk-destroy'), ['photos' => [$photo->id]])
+        ->assertForbidden();
+
+    $this->assertModelExists($photo);
+});
+
 test('destroy deletes a photo of any user together with its file', function () {
     $path = UploadedFile::fake()->image('photo.jpg')->store('photos', 'public');
     $photo = Photo::factory()->create(['image_path' => $path]);

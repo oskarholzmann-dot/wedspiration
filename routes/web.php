@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
 
+    Route::delete('photos', [AdminPhotoController::class, 'bulkDestroy'])->name('photos.bulk-destroy');
     Route::resource('photos', AdminPhotoController::class);
     Route::resource('users', AdminUserController::class);
     Route::delete('folders', [AdminFolderController::class, 'bulkDestroy'])->name('folders.bulk-destroy');
