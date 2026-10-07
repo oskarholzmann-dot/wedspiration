@@ -52,7 +52,8 @@ class SubcategoryController extends Controller
             // Exactly one target: a subcategory, a category, or "out of its subcategory" (dropped on All)
             'subcategory_id' => ['required_without_all:category,remove_subcategory', 'prohibits:category,remove_subcategory', 'integer', 'exists:subcategories,id'],
             'category' => ['required_without_all:subcategory_id,remove_subcategory', 'prohibits:remove_subcategory', Rule::enum(PhotoCategory::class)],
-            'remove_subcategory' => ['required_without_all:subcategory_id,category', 'accepted'],
+            // Only checked when sent; a missing target is already reported by the two rules above
+            'remove_subcategory' => ['sometimes', 'accepted'],
         ]);
 
         $photos = Photo::whereIn('id', $validated['photos']);
