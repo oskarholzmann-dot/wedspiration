@@ -53,17 +53,95 @@ async function compressImage(file) {
     throw new Error('could not be made small enough');
 }
 
+// Only real photos: skip hidden files (.DS_Store), sidecar files (.xmp), RAW files and so on
+function isPhoto(file) {
+    return !file.name.startsWith('.')
+        && (file.type.startsWith('image/') || /\.(jpe?g|png|gif|webp|heic|heif)$/i.test(file.name));
+}
+
+// A dropped folder: read every file inside it, including subfolders
+async function filesFromEntry(entry) {
+    if (entry.isFile) {
+        return [await new Promise((resolve, reject) => entry.file(resolve, reject))];
+    }
+
+    const reader = entry.createReader();
+    const files = [];
+
+    // readEntries returns the folder's content in batches until a batch is empty
+    while (true) {
+        const batch = await new Promise((resolve, reject) => reader.readEntries(resolve, reject));
+        if (batch.length === 0) {
+            break;
+        }
+        for (const child of batch) {
+            files.push(...await filesFromEntry(child));
+        }
+    }
+
+    return files;
+}
+
 function setupMultiUpload(form) {
-    const input = form.querySelector('input[type="file"]');
+    const inputs = form.querySelectorAll('input[type="file"]');
     const button = form.querySelector('button[type="submit"]');
     const status = form.querySelector('[data-upload-status]');
+    const dropArea = form.querySelector('[data-upload-drop]');
+    const summary = form.querySelector('[data-upload-summary]');
+
+    // The photos to upload, from either button or from dragging
+    let files = [];
+
+    function select(chosen) {
+        const all = [...chosen];
+        // Upload in file name order: "photo 2" before "photo 10"
+        files = all.filter(isPhoto)
+            .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+        const skipped = all.length - files.length;
+
+        summary.textContent = files.length === 0
+            ? 'No photos found in your selection.'
+            : `${files.length} ${files.length === 1 ? 'photo' : 'photos'} selected`
+                + (skipped > 0 ? ` (${skipped} other ${skipped === 1 ? 'file' : 'files'} skipped)` : '');
+        summary.hidden = false;
+    }
+
+    inputs.forEach((input) => input.addEventListener('change', () => select(input.files)));
+
+    // Dropping a file next to the drop area would make the browser open it and leave the page
+    window.addEventListener('dragover', (event) => event.preventDefault());
+    window.addEventListener('drop', (event) => event.preventDefault());
+
+    dropArea.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        dropArea.dataset.over = 'true';
+    });
+    dropArea.addEventListener('dragleave', () => (dropArea.dataset.over = 'false'));
+    dropArea.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        dropArea.dataset.over = 'false';
+
+        // The entries must be read right away, before the first "await"
+        const entries = [...event.dataTransfer.items]
+            .map((item) => item.webkitGetAsEntry?.())
+            .filter(Boolean);
+
+        summary.hidden = false;
+        summary.textContent = 'Reading folder…';
+
+        const dropped = [];
+        for (const entry of entries) {
+            dropped.push(...await filesFromEntry(entry));
+        }
+        select(dropped.length > 0 ? dropped : event.dataTransfer.files);
+    });
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const files = [...input.files];
         if (files.length === 0) {
-            input.reportValidity();
+            summary.hidden = false;
+            summary.textContent = 'Please choose photos or a folder first.';
             return;
         }
 

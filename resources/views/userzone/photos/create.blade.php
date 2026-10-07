@@ -17,9 +17,29 @@
                     @csrf
 
                     <div>
-                        <x-breeze.input-label for="image" value="Photos" />
-                        <input id="image" name="image" type="file" accept="image/*" multiple required
-                               class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:rounded-md file:border-0 file:bg-gray-800 file:px-4 file:py-2 file:text-white hover:file:bg-gray-700">
+                        <x-breeze.input-label value="Photos" />
+
+                        {{-- Drop photos or whole folders here, or use one of the two buttons --}}
+                        <div data-upload-drop data-over="false"
+                             class="mt-1 rounded-lg border-2 border-dashed border-gray-300 px-6 py-8 text-center transition data-[over=true]:border-gray-800 data-[over=true]:bg-gray-50">
+                            <p class="text-sm text-gray-600">Drag photos or whole folders here</p>
+                            <p class="mt-1 text-xs text-gray-500">or</p>
+
+                            <div class="mt-3 flex flex-wrap justify-center gap-3">
+                                <label class="cursor-pointer rounded-md bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-gray-700 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2">
+                                    Choose photos
+                                    <input id="image" name="image" type="file" accept="image/*" multiple class="sr-only">
+                                </label>
+                                <label class="cursor-pointer rounded-md border border-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-800 hover:bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2">
+                                    Choose a folder
+                                    <input type="file" webkitdirectory multiple class="sr-only">
+                                </label>
+                            </div>
+
+                            <p data-upload-summary hidden class="mt-4 text-sm font-medium text-gray-800" aria-live="polite"></p>
+                        </div>
+
+                        <p class="mt-2 text-xs text-gray-500">Only photos are uploaded; other files in a folder are skipped. Large photos are made smaller automatically.</p>
                         <x-breeze.input-error class="mt-2" :messages="$errors->get('image')" />
                     </div>
 

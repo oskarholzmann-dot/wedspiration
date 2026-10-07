@@ -21,6 +21,8 @@ test('a user can open the upload form', function () {
         ->assertOk()
         ->assertSee('Upload photos')
         ->assertSee('multiple', false)
+        ->assertSee('webkitdirectory', false)
+        ->assertSee('Drag photos or whole folders here')
         ->assertSee('js/photo-upload.js');
 });
 
