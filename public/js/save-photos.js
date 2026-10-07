@@ -51,6 +51,27 @@ document.addEventListener('submit', async (event) => {
     }
 });
 
+// Admins: delete a photo straight from the gallery and remove its tile
+document.addEventListener('submit', async (event) => {
+    const form = event.target.closest('form[data-admin-delete]');
+    // defaultPrevented = the admin clicked "Cancel" in the confirmation
+    if (!form || event.defaultPrevented) {
+        return;
+    }
+
+    event.preventDefault();
+
+    try {
+        await send(form.action, 'DELETE');
+        const tile = form.closest('[data-photo-card]');
+        tile.style.transition = 'opacity 200ms';
+        tile.style.opacity = '0';
+        setTimeout(() => tile.remove(), 200);
+    } catch {
+        alert('Could not delete the photo.');
+    }
+});
+
 const dropZone = document.querySelector('[data-drop-zone]');
 
 if (dropZone) {

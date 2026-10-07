@@ -119,6 +119,39 @@ test('update cannot change the owner', function () {
     expect($photo->fresh()->user_id)->toBe($originalOwner);
 });
 
+test('admins see a delete button on every photo in the gallery', function () {
+    $photo = Photo::factory()->create();
+
+    $this->actingAs($this->admin)
+        ->get(route('gallery.index'))
+        ->assertSee('data-admin-delete', false)
+        ->assertSee('data-delete-url="'.route('admin.photos.destroy', $photo).'"', false)
+        ->assertSee('data-lightbox-delete', false);
+});
+
+test('regular users and guests see no delete buttons in the gallery', function () {
+    Photo::factory()->create();
+
+    $this->get(route('gallery.index'))->assertDontSee('data-admin-delete', false);
+
+    $this->actingAs(User::factory()->create())
+        ->get(route('gallery.index'))
+        ->assertDontSee('data-admin-delete', false)
+        ->assertDontSee('data-delete-url', false)
+        ->assertDontSee('data-lightbox-delete', false);
+});
+
+test('deleting from the gallery gets a JSON answer', function () {
+    $photo = Photo::factory()->create();
+
+    $this->actingAs($this->admin)
+        ->deleteJson(route('admin.photos.destroy', $photo))
+        ->assertOk()
+        ->assertJson(['deleted' => true]);
+
+    $this->assertModelMissing($photo);
+});
+
 test('the photo list has a delete button for every photo', function () {
     $photos = Photo::factory()->count(2)->create();
 

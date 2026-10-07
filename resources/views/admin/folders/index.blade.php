@@ -72,7 +72,7 @@
                                         <a href="{{ route('admin.folders.show', $folder) }}" class="text-indigo-600 hover:underline">View</a>
                                         <a href="{{ route('admin.folders.edit', $folder) }}" class="text-indigo-600 hover:underline">Edit</a>
                                         <form method="post" action="{{ route('admin.folders.destroy', $folder) }}"
-                                              onsubmit="return confirm('Delete the folder &quot;{{ $folder->name }}&quot;? Its photos stay in the gallery.')">
+                                              onsubmit="return confirm(@js('Delete the folder "'.$folder->name.'"? Its photos stay in the gallery.'))">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" class="text-red-600 hover:underline">Delete</button>

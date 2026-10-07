@@ -21,6 +21,7 @@ if (box) {
     const nextButton = box.querySelector('[data-lightbox-next]');
     const closeButton = box.querySelector('[data-lightbox-close]');
     const saveForm = box.querySelector('[data-lightbox-save]');
+    const deleteButton = box.querySelector('[data-lightbox-delete]');
 
     let tiles = [];
     let index = 0;
@@ -39,6 +40,10 @@ if (box) {
         position.textContent = `${index + 1} / ${tiles.length}`;
         prevButton.disabled = index === 0;
         nextButton.disabled = index === tiles.length - 1;
+
+        if (deleteButton) {
+            deleteButton.hidden = !tile.dataset.deleteUrl;
+        }
 
         if (saveForm && tile.dataset.saveUrl) {
             // Same action as the tile's form, so save-photos.js keeps both buttons in sync
@@ -79,6 +84,36 @@ if (box) {
 
         event.preventDefault();
         open(link.closest('[data-photo-card]'));
+    });
+
+    // Admins: delete the photo shown, remove its tile and move on to the next one
+    deleteButton?.addEventListener('click', async () => {
+        const tile = tiles.at(index);
+        if (!confirm(`Delete "${tile.dataset.title}" for everyone? This cannot be undone.`)) {
+            return;
+        }
+
+        const response = await fetch(tile.dataset.deleteUrl, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+        });
+
+        if (!response.ok) {
+            alert('Could not delete the photo.');
+            return;
+        }
+
+        tile.remove();
+        tiles.splice(index, 1);
+
+        if (tiles.length === 0) {
+            close();
+        } else {
+            show(Math.min(index, tiles.length - 1));
+        }
     });
 
     prevButton.addEventListener('click', () => index > 0 && show(index - 1));

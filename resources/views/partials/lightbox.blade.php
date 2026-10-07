@@ -37,6 +37,14 @@
         </div>
 
         @auth
+          <div class="flex items-center gap-3">
+            @if (Auth::user()->is_admin)
+                <button type="button" data-lightbox-delete hidden
+                        class="rounded-full px-5 py-2 text-sm font-medium text-red-300 ring-1 ring-red-400/60 hover:bg-red-600 hover:text-white hover:ring-red-600">
+                    Delete
+                </button>
+            @endif
+
             <form method="post" action="" data-save-form data-lightbox-save>
                 @csrf
                 <button type="submit" data-saved="false"
@@ -46,6 +54,7 @@
                     Save
                 </button>
             </form>
+          </div>
         @endauth
     </div>
 </div>

@@ -71,7 +71,7 @@
                                         <a href="{{ route('admin.photos.show', $photo) }}" class="text-indigo-600 hover:underline">View</a>
                                         <a href="{{ route('admin.photos.edit', $photo) }}" class="text-indigo-600 hover:underline">Edit</a>
                                         <form method="post" action="{{ route('admin.photos.destroy', $photo) }}"
-                                              onsubmit="return confirm('Delete the photo &quot;{{ $photo->title }}&quot;? This cannot be undone.')">
+                                              onsubmit="return confirm(@js('Delete the photo "'.$photo->title.'"? This cannot be undone.'))">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" class="text-red-600 hover:underline">Delete</button>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PhotoRequest;
 use App\Models\Photo;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -120,10 +121,15 @@ class PhotoController extends Controller
     /**
      * Delete the photo together with its image file.
      */
-    public function destroy(Photo $photo): RedirectResponse
+    public function destroy(Request $request, Photo $photo): RedirectResponse|JsonResponse
     {
         $photo->deleteImageFile();
         $photo->delete();
+
+        // The delete button in the gallery removes the photo without reloading the page
+        if ($request->wantsJson()) {
+            return response()->json(['deleted' => true]);
+        }
 
         return redirect()
             ->route('admin.photos.index')

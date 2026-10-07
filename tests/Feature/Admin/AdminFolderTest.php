@@ -70,6 +70,20 @@ test('update changes the folder but not the owner', function () {
         ->assertSessionHasErrors('user_id');
 });
 
+test('names with quotes cannot break the delete confirmation', function () {
+    WeddingFolder::factory()->create(['name' => "Oskar's \"big\" wedding"]);
+    Photo::factory()->create(['title' => "Anna's bouquet"]);
+
+    // The apostrophe must arrive escaped for JavaScript, or the confirm() script breaks and deletes without asking
+    $apostrophe = trim(json_encode("'", JSON_HEX_APOS), '"');
+
+    $this->actingAs($this->admin)->get(route('admin.folders.index'))
+        ->assertSee('Oskar'.$apostrophe.'s', false);
+
+    $this->actingAs($this->admin)->get(route('admin.photos.index'))->assertSee('Anna'.$apostrophe.'s', false);
+    $this->actingAs($this->admin)->get(route('gallery.index'))->assertSee('Anna'.$apostrophe.'s', false);
+});
+
 test('the folder list has a delete button for every folder', function () {
     $folders = WeddingFolder::factory()->count(2)->create();
 
