@@ -5,6 +5,8 @@
         <h1 class="font-serif text-3xl text-stone-900">Gallery</h1>
         <p class="mt-2 text-stone-600">Every photo our couples have shared as inspiration.</p>
 
+        @include('gallery._tabs')
+
         <!-- Category filter -->
         <nav class="mt-6 flex flex-wrap gap-2 text-sm">
             <a href="{{ route('gallery.index') }}"

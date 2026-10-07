@@ -20,6 +20,9 @@
 
                 <p class="mt-6 text-sm text-stone-500">
                     Shared by {{ $photo->user->name }} on {{ $photo->created_at->format('d.m.Y') }}
+                    @foreach ($photo->folders as $folder)
+                        &middot; in <a href="{{ route('gallery.folders.show', $folder) }}" class="text-rose-700 hover:underline">{{ $folder->name }}</a>
+                    @endforeach
                 </p>
 
                 @can('update', $photo)

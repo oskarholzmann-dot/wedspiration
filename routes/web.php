@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', WelcomeController::class)->name('welcome');
 
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
-Route::get('/gallery/{photo}', [GalleryController::class, 'show'])->name('gallery.show');
+Route::get('/gallery/folders', [GalleryController::class, 'folders'])->name('gallery.folders');
+Route::get('/gallery/folders/{folder}', [GalleryController::class, 'folder'])->name('gallery.folders.show');
+Route::get('/gallery/{photo}', [GalleryController::class, 'show'])->name('gallery.show')->whereNumber('photo');
 
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
