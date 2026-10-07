@@ -12,7 +12,7 @@ class WelcomeController extends Controller
      */
     public function __invoke(): View
     {
-        $latestPhotos = Photo::newestFirst()->take(6)->get();
+        $latestPhotos = Photo::with('user')->newestFirst()->take(6)->get();
 
         return view('welcome', compact('latestPhotos'));
     }

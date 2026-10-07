@@ -39,7 +39,10 @@
         {{ $slot }}
     </main>
 
+    @include('partials.lightbox')
+
     <script src="{{ asset('js/infinite-scroll.js') }}" defer></script>
+    <script src="{{ asset('js/lightbox.js') }}" defer></script>
 
     @auth
         <!-- Appears while a photo is dragged: drop it here to save it into your folder -->

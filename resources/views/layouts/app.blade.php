@@ -42,7 +42,10 @@
         {{ $slot }}
     </main>
 
+    @include('partials.lightbox')
+
     <script src="{{ asset('js/save-photos.js') }}" defer></script>
+    <script src="{{ asset('js/lightbox.js') }}" defer></script>
 </div>
 </body>
 </html>

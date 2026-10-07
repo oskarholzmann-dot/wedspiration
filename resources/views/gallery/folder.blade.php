@@ -23,7 +23,7 @@
         @if ($photos->isEmpty())
             <p class="mt-8 text-stone-500">This folder has no photos yet.</p>
         @else
-            <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" data-infinite data-next="{{ $photos->nextPageUrl() }}">
+            <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" data-infinite data-next="{{ $photos->nextPageUrl() }}">
                 @foreach ($photos as $photo)
                     <x-photo-card :photo="$photo" />
                 @endforeach

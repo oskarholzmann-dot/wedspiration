@@ -74,6 +74,27 @@ test('saving only ever changes your own folder', function () {
     expect($otherFolder->photos()->count())->toBe(1);
 });
 
+test('tiles carry what the lightbox needs and the lightbox is on the page', function () {
+    $photo = Photo::factory()->create(['title' => 'Peach rose bouquet']);
+
+    $this->get(route('gallery.index'))
+        ->assertSee('data-lightbox-src="'.$photo->image_url.'"', false)
+        ->assertSee('data-title="Peach rose bouquet"', false)
+        ->assertSee('data-page-url="'.route('gallery.show', $photo).'"', false)
+        ->assertSee('data-lightbox hidden', false)
+        ->assertSee('js/lightbox.js');
+});
+
+test('the photo page has a save button for logged-in users', function () {
+    $user = User::factory()->create();
+    WeddingFolder::factory()->for($user)->create();
+    $photo = Photo::factory()->create();
+
+    $this->actingAs($user)
+        ->get(route('gallery.show', $photo))
+        ->assertSee('action="'.route('user.saved-photos.store', $photo).'"', false);
+});
+
 test('logged-in users see save buttons and the drop zone, guests do not', function () {
     $user = User::factory()->create();
     $folder = WeddingFolder::factory()->for($user)->create(['name' => 'Inspo']);

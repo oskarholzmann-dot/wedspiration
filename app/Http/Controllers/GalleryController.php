@@ -60,7 +60,7 @@ class GalleryController extends Controller
     public function folder(WeddingFolder $folder): View
     {
         $folder->load('user');
-        $photos = $folder->photos()->newestFirst()->paginate(24);
+        $photos = $folder->photos()->with('user')->newestFirst()->paginate(24);
 
         return view('gallery.folder', compact('folder', 'photos'));
     }

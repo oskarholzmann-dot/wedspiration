@@ -39,7 +39,7 @@
                     No photos yet - upload your first inspiration.
                 </div>
             @else
-                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                     @foreach ($photos as $photo)
                         <x-photo-card :photo="$photo" />
                     @endforeach

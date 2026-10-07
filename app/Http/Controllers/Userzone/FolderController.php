@@ -19,7 +19,7 @@ class FolderController extends Controller
     {
         Gate::authorize('view', $folder);
 
-        $photos = $folder->photos()->newestFirst()->get();
+        $photos = $folder->photos()->with('user')->newestFirst()->get();
 
         return view('userzone.folders.show', compact('folder', 'photos'));
     }

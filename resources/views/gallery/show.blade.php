@@ -25,6 +25,10 @@
                     @endforeach
                 </p>
 
+                @auth
+                    <x-save-photo-button :photo="$photo" :saved="in_array($photo->id, Auth::user()->savedPhotoIds())" class="mt-6 inline-block" />
+                @endauth
+
                 @can('update', $photo)
                     <a href="{{ route('user.photos.edit', $photo) }}"
                        class="mt-6 inline-block rounded-md bg-stone-900 px-4 py-2 text-sm text-white hover:bg-stone-700">
