@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" class="aspect-[4/3] w-full rounded-md object-cover">
 
-                <form method="post" action="{{ route('user.photos.update', $photo) }}" enctype="multipart/form-data" class="mt-6 space-y-6">
+                <form method="post" action="{{ route('user.photos.update', $photo) }}" enctype="multipart/form-data" class="mt-6 space-y-6" data-compress-images>
                     @csrf
                     @method('patch')
 
@@ -42,7 +42,7 @@
                     </div>
 
                     <div>
-                        <x-breeze.input-label for="image" value="Replace image (optional, max. 2 MB)" />
+                        <x-breeze.input-label for="image" value="Replace image (optional; large photos are made smaller automatically)" />
                         <input id="image" name="image" type="file" accept="image/*"
                                class="mt-1 block w-full text-sm text-gray-700 file:mr-4 file:rounded-md file:border-0 file:bg-gray-800 file:px-4 file:py-2 file:text-white hover:file:bg-gray-700">
                         <x-breeze.input-error class="mt-2" :messages="$errors->get('image')" />
@@ -71,4 +71,5 @@
             </div>
         </div>
     </div>
+    <script src="{{ asset('js/photo-upload.js') }}" defer></script>
 </x-app-layout>

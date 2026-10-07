@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePhotoRequest;
 use App\Http\Requests\UpdatePhotoRequest;
 use App\Models\Photo;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
@@ -26,7 +27,7 @@ class PhotoController extends Controller
     /**
      * Store the uploaded photo and add it to the owner's folder.
      */
-    public function store(StorePhotoRequest $request): RedirectResponse
+    public function store(StorePhotoRequest $request): RedirectResponse|JsonResponse
     {
         $user = $request->user();
 
@@ -37,6 +38,16 @@ class PhotoController extends Controller
 
         $folder = $user->defaultFolder();
         $folder->photos()->attach($photo);
+
+        // The multi-upload script sends one photo per request and expects JSON back
+        if ($request->wantsJson()) {
+            $request->session()->flash('success', 'Your photos were uploaded.');
+
+            return response()->json([
+                'title' => $photo->title,
+                'redirect' => route('user.folders.show', $folder),
+            ], 201);
+        }
 
         return redirect()
             ->route('user.folders.show', $folder)
