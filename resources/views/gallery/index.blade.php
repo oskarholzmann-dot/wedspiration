@@ -5,8 +5,36 @@
         <h1 class="font-serif text-3xl text-stone-900">Gallery</h1>
         <p class="mt-2 text-stone-600">Every photo our couples have shared as inspiration.</p>
 
+        <!-- Category filter -->
+        <nav class="mt-6 flex flex-wrap gap-2 text-sm">
+            <a href="{{ route('gallery.index') }}"
+               @class([
+                   'rounded-full px-4 py-1.5 ring-1',
+                   'bg-stone-900 text-white ring-stone-900' => ! $activeCategory,
+                   'bg-white text-stone-700 ring-stone-300 hover:bg-stone-100' => $activeCategory,
+               ])>
+                All
+            </a>
+            @foreach ($categories as $category)
+                <a href="{{ route('gallery.index', ['category' => $category->value]) }}"
+                   @class([
+                       'rounded-full px-4 py-1.5 ring-1',
+                       'bg-stone-900 text-white ring-stone-900' => $activeCategory === $category,
+                       'bg-white text-stone-700 ring-stone-300 hover:bg-stone-100' => $activeCategory !== $category,
+                   ])>
+                    {{ $category->label() }}
+                </a>
+            @endforeach
+        </nav>
+
         @if ($photos->isEmpty())
-            <p class="mt-8 text-stone-500">No photos yet - be the first to share your inspiration.</p>
+            <p class="mt-8 text-stone-500">
+                @if ($activeCategory)
+                    No photos in {{ $activeCategory->label() }} yet.
+                @else
+                    No photos yet - be the first to share your inspiration.
+                @endif
+            </p>
         @else
             <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 @foreach ($photos as $photo)

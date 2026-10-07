@@ -2,19 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PhotoCategory;
 use App\Models\Photo;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class GalleryController extends Controller
 {
     /**
-     * Show all public photos.
+     * Show all public photos, optionally filtered by category.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $photos = Photo::with('user')->latest()->paginate(12);
+        // Unknown categories in the URL are simply ignored
+        $activeCategory = PhotoCategory::tryFrom((string) $request->query('category'));
 
-        return view('gallery.index', compact('photos'));
+        $photos = Photo::with('user')
+            ->when($activeCategory, fn ($query) => $query->where('category', $activeCategory))
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
+
+        $categories = PhotoCategory::cases();
+
+        return view('gallery.index', compact('photos', 'categories', 'activeCategory'));
     }
 
     /**

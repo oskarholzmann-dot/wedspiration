@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PhotoCategory;
 use App\Models\Photo;
 
 test('the welcome page shows the latest photos', function () {
@@ -17,6 +18,26 @@ test('guests can see the gallery', function () {
     $this->get(route('gallery.index'))
         ->assertOk()
         ->assertSee('Rustic barn');
+});
+
+test('the gallery can be filtered by category', function () {
+    Photo::factory()->create(['title' => 'Peony bouquet', 'category' => PhotoCategory::Flowers]);
+    Photo::factory()->create(['title' => 'Castle garden', 'category' => PhotoCategory::Venue]);
+
+    $this->get(route('gallery.index', ['category' => 'flowers']))
+        ->assertOk()
+        ->assertSee('Peony bouquet')
+        ->assertDontSee('Castle garden');
+});
+
+test('an unknown category shows all photos', function () {
+    Photo::factory()->create(['title' => 'Peony bouquet', 'category' => PhotoCategory::Flowers]);
+    Photo::factory()->create(['title' => 'Castle garden', 'category' => PhotoCategory::Venue]);
+
+    $this->get(route('gallery.index', ['category' => 'does-not-exist']))
+        ->assertOk()
+        ->assertSee('Peony bouquet')
+        ->assertSee('Castle garden');
 });
 
 test('guests can see a single photo', function () {
