@@ -10,7 +10,7 @@
             <dl class="mt-6 grid gap-4 sm:grid-cols-2">
                 <div class="rounded-lg bg-white p-6 ring-1 ring-stone-200">
                     <dt class="text-sm text-stone-500">Email</dt>
-                    <dd class="mt-1 font-medium text-stone-900">hello@wedspiration.test</dd>
+                    <dd class="mt-1 font-medium text-stone-900">hello@oskarholly.com</dd>
                 </div>
                 <div class="rounded-lg bg-white p-6 ring-1 ring-stone-200">
                     <dt class="text-sm text-stone-500">Studio</dt>
