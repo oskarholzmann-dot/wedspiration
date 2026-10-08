@@ -23,6 +23,8 @@ test('every page opens without errors for the seeded admin', function () {
     $skipped = [
         'login', 'register', 'password.request', 'password.reset',
         'verification.notice', 'verification.verify', 'password.confirm',
+        // Needs a file path, tested in PhotoImageUrlTest
+        'storage.file',
     ];
 
     $pages = collect(Route::getRoutes()->getRoutes())

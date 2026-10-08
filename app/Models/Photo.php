@@ -65,7 +65,9 @@ class Photo extends Model
         return Attribute::get(fn () => match (true) {
             Str::startsWith($this->image_path, ['http://', 'https://']) => $this->image_path,
             Str::startsWith($this->image_path, 'images/seed/') => asset($this->image_path),
-            default => Storage::disk('public')->url($this->image_path),
+            // asset() uses the address the page is opened with, so uploads also show when APP_URL
+            // in .env does not match (e.g. "php artisan serve" on port 8000 with APP_URL=http://localhost)
+            default => asset('storage/'.$this->image_path),
         });
     }
 

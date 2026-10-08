@@ -33,7 +33,8 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
+            // Off: private files are never served, and /storage/... is used for uploaded photos (StorageFileController)
+            'serve' => false,
             'throw' => false,
             'report' => false,
         ],

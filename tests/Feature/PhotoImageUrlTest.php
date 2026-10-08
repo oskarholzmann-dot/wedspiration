@@ -52,6 +52,30 @@ test('gallery tiles reserve the right space and use the stable masonry layout', 
         ->assertSee('js/masonry.js');
 });
 
+test('uploaded image urls follow the address the page is opened with, not APP_URL', function () {
+    config(['app.url' => 'http://localhost']);
+    $photo = Photo::factory()->create(['image_path' => 'photos/abc.png']);
+
+    $this->get('http://127.0.0.1:8000/gallery')
+        ->assertSee('src="http://127.0.0.1:8000/storage/photos/abc.png"', false);
+});
+
+test('uploaded photos are served even without storage:link', function () {
+    Storage::fake('public');
+    $path = UploadedFile::fake()->image('chickins.png', 50, 50)->store('photos', 'public');
+
+    $this->get(route('storage.file', ['path' => $path]))
+        ->assertOk()
+        ->assertHeader('content-type', 'image/png');
+});
+
+test('the storage route only serves existing files of the public disk', function () {
+    Storage::fake('public');
+
+    $this->get('/storage/photos/missing.png')->assertNotFound();
+    $this->get('/storage/../.env')->assertNotFound();
+});
+
 test('an uploaded image path points to the public storage folder', function () {
     $photo = Photo::factory()->make(['image_path' => 'photos/abc.jpg']);
 

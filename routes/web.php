@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\SubcategoryController as AdminSubcategoryControll
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Userzone\DashboardController;
 use App\Http\Controllers\Userzone\FolderController;
 use App\Http\Controllers\Userzone\PhotoController;
@@ -24,6 +25,9 @@ Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index
 Route::get('/gallery/folders', [GalleryController::class, 'folders'])->name('gallery.folders');
 Route::get('/gallery/folders/{folder}', [GalleryController::class, 'folder'])->name('gallery.folders.show');
 Route::get('/gallery/{photo}', [GalleryController::class, 'show'])->name('gallery.show')->whereNumber('photo');
+
+// Uploaded photos, only used when "php artisan storage:link" is missing (see StorageFileController)
+Route::get('/storage/{path}', StorageFileController::class)->where('path', '.*')->name('storage.file');
 
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
