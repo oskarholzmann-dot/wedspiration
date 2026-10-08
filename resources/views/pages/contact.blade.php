@@ -13,8 +13,10 @@
                     <dd class="mt-1 font-medium text-stone-900">hello@oskarholly.com</dd>
                 </div>
                 <div class="rounded-lg bg-white p-6 ring-1 ring-stone-200">
-                    <dt class="text-sm text-stone-500">Studio</dt>
-                    <dd class="mt-1 font-medium text-stone-900">Berlin, Germany</dd>
+                    <dt class="text-sm text-stone-500">Website</dt>
+                    <dd class="mt-1 font-medium text-stone-900">
+                        <a href="https://www.oskarholly.com" target="_blank" rel="noopener" class="hover:underline">www.oskarholly.com</a>
+                    </dd>
                 </div>
             </dl>
         </div>
