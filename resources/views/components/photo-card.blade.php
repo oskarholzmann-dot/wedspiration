@@ -5,6 +5,14 @@
     $canSave = auth()->check();
     $saved = $canSave && in_array($photo->id, auth()->user()->savedPhotoIds());
     $size = $photo->image_size;
+    $isAdmin = (bool) auth()->user()?->is_admin;
+
+    // Admins may delete any photo (admin route); everyone else only their own photos (PhotoPolicy)
+    $deleteUrl = match (true) {
+        $isAdmin => route('admin.photos.destroy', $photo),
+        (bool) auth()->user()?->can('delete', $photo) => route('user.photos.destroy', $photo),
+        default => null,
+    };
 @endphp
 
 {{-- One photo as a tile in its own shape (no cropping). A click opens it large in the lightbox (public/js/lightbox.js);
@@ -17,7 +25,8 @@
      data-category="{{ $photo->category?->label() }}"
      data-meta="Shared by {{ $photo->user->name }}"
      data-page-url="{{ route('gallery.show', $photo) }}"
-     @if (auth()->user()?->is_admin) data-delete-url="{{ route('admin.photos.destroy', $photo) }}" data-assign-url="{{ route('admin.photos.subcategory', $photo) }}" data-photo-id="{{ $photo->id }}" @endif
+     @if ($deleteUrl) data-delete-url="{{ $deleteUrl }}" @endif
+     @if ($isAdmin) data-assign-url="{{ route('admin.photos.subcategory', $photo) }}" data-photo-id="{{ $photo->id }}" @endif
      @if ($canSave) draggable="true" data-save-url="{{ route('user.saved-photos.store', $photo) }}" @endif>
     <a href="{{ route('gallery.show', $photo) }}" draggable="false" data-lightbox-open
        class="block overflow-hidden rounded-md bg-stone-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-700 focus-visible:ring-offset-2">
@@ -39,16 +48,16 @@
         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
     </span>
 
-    @if (auth()->user()?->is_admin)
-        {{-- Admins can delete any photo right here; without JavaScript this is a normal form --}}
-        <form method="post" action="{{ route('admin.photos.destroy', $photo) }}" data-admin-delete
+    @if ($deleteUrl)
+        {{-- Owners (and admins) can delete the photo right here; without JavaScript this is a normal form --}}
+        <form method="post" action="{{ $deleteUrl }}" data-delete-form
               class="absolute top-2 left-2 transition sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
-              onsubmit="return confirm(@js('Delete "'.$photo->title.'" for everyone? This cannot be undone.'))">
+              onsubmit="return confirm(@js('Delete "'.$photo->title.'"? It disappears from the gallery and every folder. This cannot be undone.'))">
             @csrf
             @method('delete')
-            {{-- Without JavaScript: come back to this page instead of the admin list --}}
+            {{-- Without JavaScript: come back to this page instead of another list --}}
             <input type="hidden" name="return_to_previous" value="1">
-            <button type="submit" title="Delete this photo (admin)"
+            <button type="submit" title="Delete this photo"
                     class="rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-red-700 shadow-sm ring-1 ring-red-200 hover:bg-red-600 hover:text-white hover:ring-red-600">
                 Delete
             </button>

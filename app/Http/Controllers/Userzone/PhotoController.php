@@ -9,6 +9,7 @@ use App\Http\Requests\UpdatePhotoRequest;
 use App\Models\Photo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
@@ -88,12 +89,22 @@ class PhotoController extends Controller
     /**
      * Delete the photo together with its image file.
      */
-    public function destroy(Photo $photo): RedirectResponse
+    public function destroy(Request $request, Photo $photo): RedirectResponse|JsonResponse
     {
         Gate::authorize('delete', $photo);
 
         $photo->deleteImageFile();
         $photo->delete();
+
+        // Delete button on a photo tile: remove the tile without reloading the page
+        if ($request->wantsJson()) {
+            return response()->json(['deleted' => true]);
+        }
+
+        // Delete button on a tile without JavaScript: stay on the page it was clicked on
+        if ($request->boolean('return_to_previous')) {
+            return back()->with('success', 'Your photo was deleted.');
+        }
 
         return redirect()
             ->route('user.dashboard')

@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $folders = $request->user()
             ->folders()
             ->withCount('photos')
-            ->with(['photos' => fn ($query) => $query->newestFirst()->limit(4)])
+            ->with(['photos' => fn ($query) => $query->with('user')->newestFirst()->limit(4)])
             ->get();
 
         return view('userzone.dashboard', compact('folders'));

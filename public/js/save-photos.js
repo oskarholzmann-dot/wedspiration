@@ -51,9 +51,9 @@ document.addEventListener('submit', async (event) => {
     }
 });
 
-// Admins: delete a photo straight from the gallery and remove its tile
+// Delete a photo straight from its tile (owners and admins) and remove the tile
 document.addEventListener('submit', async (event) => {
-    const form = event.target.closest('form[data-admin-delete]');
+    const form = event.target.closest('form[data-delete-form]');
     // defaultPrevented = the admin clicked "Cancel" in the confirmation
     if (!form || event.defaultPrevented) {
         return;

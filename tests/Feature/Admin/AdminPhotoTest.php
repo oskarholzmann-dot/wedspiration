@@ -124,21 +124,50 @@ test('admins see a delete button on every photo in the gallery', function () {
 
     $this->actingAs($this->admin)
         ->get(route('gallery.index'))
-        ->assertSee('data-admin-delete', false)
+        ->assertSee('data-delete-form', false)
         ->assertSee('data-delete-url="'.route('admin.photos.destroy', $photo).'"', false)
         ->assertSee('data-lightbox-delete', false);
 });
 
-test('regular users and guests see no delete buttons in the gallery', function () {
+test('guests and other users see no delete buttons on someone else\'s photos', function () {
     Photo::factory()->create();
 
-    $this->get(route('gallery.index'))->assertDontSee('data-admin-delete', false);
+    $this->get(route('gallery.index'))
+        ->assertDontSee('data-delete-form', false)
+        ->assertDontSee('data-lightbox-delete', false);
 
     $this->actingAs(User::factory()->create())
         ->get(route('gallery.index'))
-        ->assertDontSee('data-admin-delete', false)
-        ->assertDontSee('data-delete-url', false)
-        ->assertDontSee('data-lightbox-delete', false);
+        ->assertDontSee('data-delete-form', false)
+        ->assertDontSee('data-delete-url', false);
+});
+
+test('owners see a delete button on their own photos, using their own route', function () {
+    $user = User::factory()->create();
+    $own = Photo::factory()->for($user)->create();
+    $other = Photo::factory()->create();
+
+    $this->actingAs($user)->get(route('gallery.index'))
+        ->assertSee('data-delete-url="'.route('user.photos.destroy', $own).'"', false)
+        ->assertDontSee(route('user.photos.destroy', $other), false)
+        ->assertDontSee(route('admin.photos.destroy', $own), false);
+});
+
+test('owners can delete their photo from a tile without leaving the page', function () {
+    $user = User::factory()->create();
+    $photo = Photo::factory()->for($user)->create();
+
+    $this->actingAs($user)
+        ->deleteJson(route('user.photos.destroy', $photo))
+        ->assertOk()
+        ->assertJson(['deleted' => true]);
+    $this->assertModelMissing($photo);
+
+    $second = Photo::factory()->for($user)->create();
+    $this->actingAs($user)
+        ->from(route('user.dashboard'))
+        ->delete(route('user.photos.destroy', $second), ['return_to_previous' => '1'])
+        ->assertRedirect(route('user.dashboard'));
 });
 
 test('deleting from the gallery without JavaScript returns to the gallery', function () {

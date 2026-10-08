@@ -34,12 +34,15 @@
                     @if ($folder->photos->isEmpty())
                         <p class="mt-4 text-gray-500">No photos yet - upload your first inspiration.</p>
                     @else
-                        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {{-- The same photo tiles as in the gallery: open large, save, and delete your own --}}
+                        <div class="mt-4 columns-2 gap-2 sm:columns-4" data-masonry data-masonry-max="4">
                             @foreach ($folder->photos as $photo)
-                                <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}"
-                                     class="aspect-[4/3] w-full rounded-md object-cover">
+                                <x-photo-card :photo="$photo" />
                             @endforeach
                         </div>
+                        <a href="{{ route('user.folders.show', $folder) }}" class="mt-2 inline-block text-sm text-gray-600 hover:text-gray-900 hover:underline">
+                            Show all {{ $folder->photos_count }} {{ Str::plural('photo', $folder->photos_count) }} &rarr;
+                        </a>
                     @endif
                 </div>
             @empty
