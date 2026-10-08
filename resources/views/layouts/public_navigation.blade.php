@@ -15,6 +15,11 @@
                     <x-breeze.nav-link :href="route('gallery.index')" :active="request()->routeIs('gallery.*')">
                         Gallery
                     </x-breeze.nav-link>
+                    @auth
+                        <x-breeze.nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.*')">
+                            My folder
+                        </x-breeze.nav-link>
+                    @endauth
                     <x-breeze.nav-link :href="route('about')" :active="request()->routeIs('about')">
                         About
                     </x-breeze.nav-link>
@@ -24,12 +29,13 @@
                 </div>
             </div>
 
-            <!-- Login / Register, or a link to the userzone when logged in -->
+            {{-- Login / Register, or Log out when logged in ("My folder" is in the links on the left) --}}
             <div class="hidden sm:flex sm:items-center sm:gap-4 text-sm">
                 @auth
-                    <a href="{{ route('user.dashboard') }}" class="rounded-md bg-stone-900 px-4 py-2 text-white hover:bg-stone-700">
-                        My folder
-                    </a>
+                    <form method="post" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="text-stone-600 hover:text-stone-900">Log out</button>
+                    </form>
                 @else
                     <a href="{{ route('login') }}" class="text-stone-600 hover:text-stone-900">Log in</a>
                     <a href="{{ route('register') }}" class="rounded-md bg-stone-900 px-4 py-2 text-white hover:bg-stone-700">
@@ -59,6 +65,11 @@
             <x-breeze.responsive-nav-link :href="route('gallery.index')" :active="request()->routeIs('gallery.*')">
                 Gallery
             </x-breeze.responsive-nav-link>
+            @auth
+                <x-breeze.responsive-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.*')">
+                    My folder
+                </x-breeze.responsive-nav-link>
+            @endauth
             <x-breeze.responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
                 About
             </x-breeze.responsive-nav-link>
@@ -69,9 +80,12 @@
 
         <div class="pt-4 pb-3 border-t border-stone-200 space-y-1">
             @auth
-                <x-breeze.responsive-nav-link :href="route('user.dashboard')">
-                    My folder
-                </x-breeze.responsive-nav-link>
+                <form method="post" action="{{ route('logout') }}">
+                    @csrf
+                    <x-breeze.responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                        Log out
+                    </x-breeze.responsive-nav-link>
+                </form>
             @else
                 <x-breeze.responsive-nav-link :href="route('login')">
                     Log in
