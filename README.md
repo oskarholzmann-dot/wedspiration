@@ -26,7 +26,7 @@ php artisan migrate:fresh --seed
 php artisan storage:link
 ```
 
-> **`php artisan storage:link` is required.** Uploaded photos are stored in `storage/app/public/photos`; the link makes them reachable in the browser under `/storage/...`. Without it, newly uploaded images don't show.
+> **`php artisan storage:link` is recommended.** Uploaded photos are stored in `storage/app/public/photos`; the link lets the web server send them directly under `/storage/...`. Without it, Laravel serves them itself (`StorageFileController`), which also works, just a little slower.
 
 Then open the site (e.g. with Laravel Herd at `http://wedspiration.test`, or with `php artisan serve` at `http://localhost:8000`).
 
