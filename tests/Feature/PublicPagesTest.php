@@ -3,13 +3,15 @@
 use App\Enums\PhotoCategory;
 use App\Models\Photo;
 
-test('the welcome page shows the latest photos', function () {
-    $photo = Photo::factory()->create(['title' => 'Peony bridal bouquet']);
+test('the welcome page introduces the app without a photo list', function () {
+    Photo::factory()->create(['title' => 'Peony bridal bouquet']);
 
     $this->get(route('welcome'))
         ->assertOk()
-        ->assertSee('Wedspiration')
-        ->assertSee('Peony bridal bouquet');
+        ->assertSee('Wedspiration is a visual inspiration archive')
+        ->assertSee('Browse the gallery')
+        ->assertDontSee('Latest inspiration')
+        ->assertDontSee('Peony bridal bouquet');
 });
 
 test('guests can see the gallery', function () {

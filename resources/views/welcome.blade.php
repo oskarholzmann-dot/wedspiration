@@ -1,6 +1,6 @@
 <x-public-layout>
-    <!-- Hero -->
-    <section class="bg-white border-b border-stone-200">
+    <!-- Hero: fills the screen between navigation and footer -->
+    <section class="flex min-h-[70vh] items-center bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
             <h1 class="font-serif text-4xl sm:text-5xl text-stone-900">
                 Collect the moments you dream of
@@ -21,23 +21,5 @@
                 @endguest
             </div>
         </div>
-    </section>
-
-    <!-- Latest photos -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="flex items-baseline justify-between">
-            <h2 class="font-serif text-2xl text-stone-900">Latest inspiration</h2>
-            <a href="{{ route('gallery.index') }}" class="text-sm text-rose-700 hover:underline">See all photos &rarr;</a>
-        </div>
-
-        @if ($latestPhotos->isEmpty())
-            <p class="mt-8 text-stone-500">No photos yet - be the first to share your inspiration.</p>
-        @else
-            <div class="mt-8 columns-2 gap-2 sm:columns-3 lg:columns-4" data-masonry data-masonry-max="4">
-                @foreach ($latestPhotos as $photo)
-                    <x-photo-card :photo="$photo" />
-                @endforeach
-            </div>
-        @endif
     </section>
 </x-public-layout>
