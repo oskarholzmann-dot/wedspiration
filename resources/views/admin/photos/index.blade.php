@@ -12,6 +12,7 @@
     </x-slot>
 
     <div class="py-12">
+        {{-- AI-GENERATED (beyond course scope): bulk delete with checkboxes — written with Claude Code --}}
         {{-- Alpine keeps track of the ticked photos; the checkboxes belong to the bulk form via form="bulk-delete" --}}
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4"
              x-data="{ selected: [], all: @js($photos->pluck('id')->map(fn ($id) => (string) $id)) }">

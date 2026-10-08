@@ -13,6 +13,7 @@
                     You can select several at once; large photos are made smaller automatically.
                 </p>
 
+                {{-- AI-GENERATED (beyond course scope): multi and folder upload with drag and drop, photos shrunk in the browser — written with Claude Code --}}
                 <form method="post" action="{{ route('user.photos.store') }}" enctype="multipart/form-data" class="mt-6 space-y-6" data-multi-upload>
                     @csrf
 

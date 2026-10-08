@@ -1,5 +1,7 @@
 @props(['photo', 'saved' => false])
 
+{{-- AI-GENERATED (beyond course scope): saving photos into your folder — written with Claude Code --}}
+
 {{-- Works without JavaScript as a normal form; public/js/save-photos.js turns it into an instant toggle --}}
 <form method="post" action="{{ route('user.saved-photos.store', $photo) }}" data-save-form {{ $attributes }}>
     @csrf

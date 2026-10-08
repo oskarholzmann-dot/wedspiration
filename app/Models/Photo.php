@@ -65,12 +65,14 @@ class Photo extends Model
         return Attribute::get(fn () => match (true) {
             Str::startsWith($this->image_path, ['http://', 'https://']) => $this->image_path,
             Str::startsWith($this->image_path, 'images/seed/') => asset($this->image_path),
+            // AI-GENERATED (beyond course scope): upload URLs independent of APP_URL — written with Claude Code
             // asset() uses the address the page is opened with, so uploads also show when APP_URL
             // in .env does not match (e.g. "php artisan serve" on port 8000 with APP_URL=http://localhost)
             default => asset('storage/'.$this->image_path),
         });
     }
 
+    // AI-GENERATED (beyond course scope): image sizes for the stable masonry layout — written with Claude Code
     /**
      * Width and height of the image in pixels, read once from the file and then remembered.
      * Lets the gallery reserve the right space before the image has loaded (no jumping layout).
@@ -111,6 +113,7 @@ class Photo extends Model
         }
     }
 
+    // AI-GENERATED (beyond course scope): subcategories — written with Claude Code
     /**
      * Get the subcategory the photo is in (admins sort photos into these).
      *

@@ -1,3 +1,4 @@
+// AI-GENERATED (beyond course scope): lightbox — written with Claude Code
 /*
  * Lightbox: a click on a photo tile shows the photo large over the page.
  *

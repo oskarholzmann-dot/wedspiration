@@ -1,5 +1,7 @@
 <?php
 
+// AI-GENERATED (beyond course scope): users editing their own folder — written with Claude Code
+
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;

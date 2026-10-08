@@ -4,6 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ $folder->name }}
             </h2>
+            {{-- AI-GENERATED (beyond course scope): users editing their own folder — written with Claude Code --}}
             <a href="{{ route('user.folders.edit', $folder) }}"
                class="inline-flex items-center px-4 py-2 bg-gray-800 rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
                 Edit folder

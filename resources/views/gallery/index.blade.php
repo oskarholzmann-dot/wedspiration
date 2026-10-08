@@ -15,8 +15,10 @@
         <h1 class="font-serif text-3xl text-stone-900">Gallery</h1>
         <p class="mt-2 text-stone-600">Every photo our couples have shared as inspiration.</p>
 
+        {{-- AI-GENERATED (beyond course scope): Photos / Folders switch — written with Claude Code --}}
         @include('gallery._tabs')
 
+        {{-- AI-GENERATED (beyond course scope): sticky filter bar — written with Claude Code --}}
         {{-- Sticky: stays visible while scrolling, so photos can be dragged onto a subcategory from anywhere --}}
         <div class="sticky top-0 z-30 -mx-4 mt-6 space-y-3 bg-stone-50/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
             <!-- Category filter -->
@@ -31,6 +33,7 @@
                 @endforeach
             </nav>
 
+            {{-- AI-GENERATED (beyond course scope): subcategories with drag and drop — written with Claude Code --}}
             <!-- Subcategory filter; for admins every subcategory is also a drop target -->
             @if ($subcategories->isNotEmpty() || $isAdmin)
                 <nav class="flex flex-wrap items-center gap-2 text-sm" aria-label="Subcategories">
@@ -84,6 +87,7 @@
             @endif
 
             @if ($isAdmin)
+                {{-- AI-GENERATED (beyond course scope): selecting several photos and dragging them as a group — written with Claude Code --}}
                 <!-- Admin: select several photos, then drag them together onto a category or subcategory -->
                 <div class="flex flex-wrap items-center gap-3 text-sm">
                     <button type="button" data-select-toggle aria-pressed="false" data-sort-url="{{ route('admin.photos.sort') }}"
@@ -127,6 +131,7 @@
         @endif
     </section>
 
+    {{-- AI-GENERATED (beyond course scope): drag-and-drop sorting script — written with Claude Code --}}
     @if ($isAdmin)
         <x-script src="js/admin-sorting.js" />
     @endif

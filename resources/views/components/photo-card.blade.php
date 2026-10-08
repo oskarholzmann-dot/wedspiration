@@ -1,5 +1,7 @@
 @props(['photo'])
 
+{{-- AI-GENERATED (beyond course scope): photo tiles with lightbox, drag and drop, save/delete buttons and masonry sizes — written with Claude Code --}}
+
 @php
     // Logged-in users can save any photo into their folder (button, or drag onto the drop zone)
     $canSave = auth()->check();

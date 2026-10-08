@@ -1,3 +1,4 @@
+{{-- AI-GENERATED (beyond course scope): folder view of the gallery — written with Claude Code --}}
 {{-- Switch between the photo view and the folder view of the gallery --}}
 <div class="mt-6 inline-flex rounded-lg bg-stone-200/60 p-1 text-sm">
     <a href="{{ route('gallery.index') }}"

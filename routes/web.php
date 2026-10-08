@@ -22,10 +22,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', WelcomeController::class)->name('welcome');
 
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+// AI-GENERATED (beyond course scope): folder view of the gallery (2 routes) — written with Claude Code
 Route::get('/gallery/folders', [GalleryController::class, 'folders'])->name('gallery.folders');
 Route::get('/gallery/folders/{folder}', [GalleryController::class, 'folder'])->name('gallery.folders.show');
 Route::get('/gallery/{photo}', [GalleryController::class, 'show'])->name('gallery.show')->whereNumber('photo');
 
+// AI-GENERATED (beyond course scope): storage fallback route — written with Claude Code
 // Uploaded photos, only used when "php artisan storage:link" is missing (see StorageFileController)
 Route::get('/storage/{path}', StorageFileController::class)->where('path', '.*')->name('storage.file');
 
@@ -46,10 +48,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
         Route::get('/folders/{folder}', [FolderController::class, 'show'])->name('folders.show');
+        // AI-GENERATED (beyond course scope): users editing / deleting their own folder (3 routes) — written with Claude Code
         Route::get('/folders/{folder}/edit', [FolderController::class, 'edit'])->name('folders.edit');
         Route::patch('/folders/{folder}', [FolderController::class, 'update'])->name('folders.update');
         Route::delete('/folders/{folder}', [FolderController::class, 'destroy'])->name('folders.destroy');
 
+        // AI-GENERATED (beyond course scope): saving photos into your folder (2 routes) — written with Claude Code
         // Save any photo from the gallery into your own folder, or remove it again
         Route::post('/saved-photos/{photo}', [SavedPhotoController::class, 'store'])->name('saved-photos.store');
         Route::delete('/saved-photos/{photo}', [SavedPhotoController::class, 'destroy'])->name('saved-photos.destroy');
@@ -73,8 +77,10 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
 
+    // AI-GENERATED (beyond course scope): bulk delete of photos — written with Claude Code
     Route::delete('photos', [AdminPhotoController::class, 'bulkDestroy'])->name('photos.bulk-destroy');
 
+    // AI-GENERATED (beyond course scope): subcategories and drag-and-drop sorting (4 routes) — written with Claude Code
     // Subcategories are created, filled (drag and drop) and deleted right in the gallery
     Route::post('subcategories', [AdminSubcategoryController::class, 'store'])->name('subcategories.store');
     Route::delete('subcategories/{subcategory}', [AdminSubcategoryController::class, 'destroy'])->name('subcategories.destroy');
@@ -83,6 +89,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::resource('photos', AdminPhotoController::class);
     Route::resource('users', AdminUserController::class);
+    // AI-GENERATED (beyond course scope): bulk delete of folders — written with Claude Code
     Route::delete('folders', [AdminFolderController::class, 'bulkDestroy'])->name('folders.bulk-destroy');
     Route::resource('folders', AdminFolderController::class);
 });

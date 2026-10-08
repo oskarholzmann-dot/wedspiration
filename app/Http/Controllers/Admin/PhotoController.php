@@ -33,7 +33,7 @@ class PhotoController extends Controller
     {
         $users = User::orderBy('name')->get();
         $categories = PhotoCategory::cases();
-        $subcategories = Subcategory::orderBy('name')->get();
+        $subcategories = Subcategory::orderBy('name')->get(); // AI-GENERATED (beyond course scope): subcategories — written with Claude Code
 
         return view('admin.photos.create', compact('users', 'categories', 'subcategories'));
     }
@@ -73,7 +73,7 @@ class PhotoController extends Controller
     public function edit(Photo $photo): View
     {
         $categories = PhotoCategory::cases();
-        $subcategories = Subcategory::orderBy('name')->get();
+        $subcategories = Subcategory::orderBy('name')->get(); // AI-GENERATED (beyond course scope): subcategories — written with Claude Code
 
         return view('admin.photos.edit', compact('photo', 'categories', 'subcategories'));
     }
@@ -97,6 +97,7 @@ class PhotoController extends Controller
             ->with('success', 'The photo was updated.');
     }
 
+    // AI-GENERATED (beyond course scope): bulk delete with checkboxes — written with Claude Code
     /**
      * Delete several photos at once (the ticked checkboxes in the list), image files included.
      */
@@ -129,6 +130,7 @@ class PhotoController extends Controller
         $photo->deleteImageFile();
         $photo->delete();
 
+        // AI-GENERATED (beyond course scope): deleting from the gallery without reloading — written with Claude Code
         // The delete button in the gallery removes the photo without reloading the page
         if ($request->wantsJson()) {
             return response()->json(['deleted' => true]);

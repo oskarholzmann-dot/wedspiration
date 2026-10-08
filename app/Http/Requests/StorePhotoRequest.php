@@ -19,6 +19,7 @@ class StorePhotoRequest extends FormRequest
         return true;
     }
 
+    // AI-GENERATED (beyond course scope): titles from file names for multi/folder upload — written with Claude Code
     /**
      * Without a title, use the file name: "peony-bouquet.jpg" becomes "Peony bouquet".
      */

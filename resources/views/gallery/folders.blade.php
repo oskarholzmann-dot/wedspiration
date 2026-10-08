@@ -1,3 +1,4 @@
+{{-- AI-GENERATED (beyond course scope): folder view of the gallery — written with Claude Code --}}
 <x-public-layout>
     <x-slot name="title">Gallery folders</x-slot>
 

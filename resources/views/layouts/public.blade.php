@@ -39,6 +39,7 @@
         {{ $slot }}
     </main>
 
+    {{-- AI-GENERATED (beyond course scope): lightbox, stable masonry layout and infinite scrolling — written with Claude Code --}}
     @include('partials.lightbox')
 
     <x-script src="js/masonry.js" />
@@ -46,6 +47,7 @@
     <x-script src="js/lightbox.js" />
 
     @auth
+        {{-- AI-GENERATED (beyond course scope): drop zone for saving photos into your folder — written with Claude Code --}}
         <!-- Appears while a photo is dragged: drop it here to save it into your folder -->
         <div data-drop-zone hidden data-over="false"
              class="group fixed inset-x-0 bottom-0 z-50 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">

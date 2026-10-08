@@ -1,5 +1,7 @@
 <?php
 
+// AI-GENERATED (beyond course scope): subcategories — written with Claude Code
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

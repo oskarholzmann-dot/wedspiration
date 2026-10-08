@@ -1,3 +1,4 @@
+// AI-GENERATED (beyond course scope): infinite scrolling — written with Claude Code
 /*
  * Infinite scrolling for paginated lists.
  *

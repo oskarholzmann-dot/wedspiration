@@ -33,6 +33,7 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
+            // AI-GENERATED (beyond course scope): storage fallback route — written with Claude Code
             // Off: private files are never served, and /storage/... is used for uploaded photos (StorageFileController)
             'serve' => false,
             'throw' => false,

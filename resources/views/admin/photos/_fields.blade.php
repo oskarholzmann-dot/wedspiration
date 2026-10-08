@@ -26,6 +26,7 @@
     <x-breeze.input-error class="mt-2" :messages="$errors->get('category')" />
 </div>
 
+{{-- AI-GENERATED (beyond course scope): subcategories — written with Claude Code --}}
 <div>
     <x-breeze.input-label for="subcategory_id" value="Subcategory (optional)" />
     <select id="subcategory_id" name="subcategory_id"

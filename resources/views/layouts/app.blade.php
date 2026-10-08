@@ -42,6 +42,7 @@
         {{ $slot }}
     </main>
 
+    {{-- AI-GENERATED (beyond course scope): lightbox, masonry layout and save buttons — written with Claude Code --}}
     @include('partials.lightbox')
 
     <x-script src="js/masonry.js" />

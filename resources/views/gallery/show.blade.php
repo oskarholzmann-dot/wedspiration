@@ -20,11 +20,13 @@
 
                 <p class="mt-6 text-sm text-stone-500">
                     Shared by {{ $photo->user->name }} on {{ $photo->created_at->format('d.m.Y') }}
+                    {{-- AI-GENERATED (beyond course scope): links to the public folder pages — written with Claude Code --}}
                     @foreach ($photo->folders as $folder)
                         &middot; in <a href="{{ route('gallery.folders.show', $folder) }}" class="text-rose-700 hover:underline">{{ $folder->name }}</a>
                     @endforeach
                 </p>
 
+                {{-- AI-GENERATED (beyond course scope): saving photos into your folder — written with Claude Code --}}
                 @auth
                     <x-save-photo-button :photo="$photo" :saved="in_array($photo->id, Auth::user()->savedPhotoIds())" class="mt-6 inline-block" />
                 @endauth

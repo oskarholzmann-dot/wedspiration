@@ -1,3 +1,4 @@
+{{-- AI-GENERATED (beyond course scope): public folder pages — written with Claude Code --}}
 <x-public-layout>
     <x-slot name="title">{{ $folder->name }}</x-slot>
 

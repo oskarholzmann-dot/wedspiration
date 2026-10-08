@@ -24,6 +24,7 @@ class FolderController extends Controller
         return view('userzone.folders.show', compact('folder', 'photos'));
     }
 
+    // AI-GENERATED (beyond course scope): users editing their own folder — written with Claude Code
     /**
      * Show the form to edit one of the user's folders.
      */
@@ -34,6 +35,7 @@ class FolderController extends Controller
         return view('userzone.folders.edit', compact('folder'));
     }
 
+    // AI-GENERATED (beyond course scope): users editing their own folder — written with Claude Code
     /**
      * Save the folder's name, wedding date and notes.
      */
@@ -46,6 +48,7 @@ class FolderController extends Controller
             ->with('success', 'Your folder was updated.');
     }
 
+    // AI-GENERATED (beyond course scope): users deleting their own folder — written with Claude Code
     /**
      * Delete the folder together with the photos the owner uploaded into it.
      * Photos saved from other couples only lose the link; they stay with their owners.

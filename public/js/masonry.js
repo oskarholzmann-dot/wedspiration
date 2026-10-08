@@ -1,3 +1,4 @@
+// AI-GENERATED (beyond course scope): stable masonry layout — written with Claude Code
 /*
  * Stable masonry layout for photo grids ([data-masonry]).
  *

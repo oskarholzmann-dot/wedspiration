@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             $this->createFolderWithPhotos($user);
         }
 
+        // AI-GENERATED (beyond course scope): subcategories — written with Claude Code
         // A few subcategories, each with some of the photos sorted into it
         $subcategories = Subcategory::factory()->count(4)->create();
 

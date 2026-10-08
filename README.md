@@ -99,3 +99,24 @@ Pest feature tests cover the public pages, upload and validation, ownership chec
 
 - Based on the course's **Laravel educational starter pack** (Laravel 13, Breeze, Pest, Tailwind & Alpine via CDN, Debugbar).
 - Developed with **Claude Code** as an AI coding assistant. Commits it co-authored are marked with a `Co-Authored-By: Claude` line.
+
+### AI-generated extras beyond the course requirements
+
+Everything that goes far beyond the minimal requirements was written by Claude Code and is marked in the code with a comment that starts with **`AI-GENERATED (beyond course scope)`**. List every marked place with:
+
+```bash
+grep -rn "AI-GENERATED" app config database resources routes public/js tests
+```
+
+| Extra | Main files |
+|-------|------------|
+| Multi and folder upload, photos shrunk in the browser | `public/js/photo-upload.js`, `userzone/photos/create.blade.php`, `StorePhotoRequest::prepareForValidation()` |
+| Saving other couples' photos into your folder (button / drag and drop) | `SavedPhotoController`, `public/js/save-photos.js`, `components/save-photo-button.blade.php` |
+| Gallery folder view and public folder pages | `GalleryController::folders()` / `folder()`, `gallery/folders.blade.php`, `gallery/folder.blade.php` |
+| Users editing / deleting their own folder | `Userzone/FolderController::edit()` / `update()` / `destroy()`, `UpdateFolderRequest` |
+| Lightbox, infinite scrolling, stable masonry layout | `public/js/lightbox.js`, `public/js/infinite-scroll.js`, `public/js/masonry.js`, `Photo::imageSize` |
+| Subcategories with drag-and-drop sorting (incl. selecting several photos) | `Subcategory` model, migrations, factory, `Admin/SubcategoryController`, `public/js/admin-sorting.js` |
+| Bulk delete in the admin lists, delete buttons on photo tiles | `bulkDestroy()` in `Admin/FolderController` and `Admin/PhotoController`, `components/photo-card.blade.php` |
+| Versioned script URLs, serving uploads without `storage:link` | `components/script.blade.php`, `StorageFileController` |
+
+The parts that implement the course requirements (models, relationships, migrations, factories, seeder, routes and controllers, the full CRUD in the admin area, validation, authentication and authorisation, layouts) are not marked.

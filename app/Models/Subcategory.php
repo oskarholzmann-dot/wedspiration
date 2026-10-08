@@ -1,5 +1,7 @@
 <?php
 
+// AI-GENERATED (beyond course scope): subcategories — written with Claude Code
+
 namespace App\Models;
 
 use Database\Factories\SubcategoryFactory;

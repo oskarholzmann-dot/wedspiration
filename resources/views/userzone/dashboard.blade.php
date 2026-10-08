@@ -34,6 +34,7 @@
                     @if ($folder->photos->isEmpty())
                         <p class="mt-4 text-gray-500">No photos yet - upload your first inspiration.</p>
                     @else
+                        {{-- AI-GENERATED (beyond course scope): photo tiles on the dashboard — written with Claude Code --}}
                         {{-- The same photo tiles as in the gallery: open large, save, and delete your own --}}
                         <div class="mt-4 columns-2 gap-2 sm:columns-4" data-masonry data-masonry-max="4">
                             @foreach ($folder->photos as $photo)

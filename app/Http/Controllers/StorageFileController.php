@@ -1,5 +1,7 @@
 <?php
 
+// AI-GENERATED (beyond course scope): serves uploads when storage:link is missing — written with Claude Code
+
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;

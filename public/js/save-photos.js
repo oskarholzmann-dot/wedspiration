@@ -1,3 +1,4 @@
+// AI-GENERATED (beyond course scope): saving photos into your folder, delete buttons on tiles — written with Claude Code
 /*
  * Save photos into your own folder without reloading the page.
  *

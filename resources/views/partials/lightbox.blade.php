@@ -1,3 +1,4 @@
+{{-- AI-GENERATED (beyond course scope): lightbox — written with Claude Code --}}
 {{-- Large view of one photo over the page. Filled and opened by public/js/lightbox.js --}}
 <div data-lightbox hidden role="dialog" aria-modal="true" aria-labelledby="lightbox-title"
      class="fixed inset-0 z-40 flex flex-col bg-stone-950/95 text-white">

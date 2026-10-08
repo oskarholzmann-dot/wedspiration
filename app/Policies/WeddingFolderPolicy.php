@@ -15,6 +15,7 @@ class WeddingFolderPolicy
         return $folder->user_id === $user->id;
     }
 
+    // AI-GENERATED (beyond course scope): users editing their own folder — written with Claude Code
     /**
      * Determine whether the user can edit the folder.
      */
@@ -23,6 +24,7 @@ class WeddingFolderPolicy
         return $folder->user_id === $user->id;
     }
 
+    // AI-GENERATED (beyond course scope): users deleting their own folder — written with Claude Code
     /**
      * Determine whether the user can delete the folder.
      */

@@ -1,5 +1,7 @@
 <?php
 
+// AI-GENERATED (beyond course scope): tests for an extra feature — written with Claude Code
+
 use App\Models\Photo;
 use App\Models\User;
 use App\Models\WeddingFolder;

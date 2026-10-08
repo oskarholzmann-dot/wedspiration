@@ -10,6 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" class="aspect-[4/3] w-full rounded-md object-cover">
 
+                {{-- AI-GENERATED (beyond course scope): large photos shrunk in the browser — written with Claude Code --}}
                 <form method="post" action="{{ route('user.photos.update', $photo) }}" enctype="multipart/form-data" class="mt-6 space-y-6" data-compress-images>
                     @csrf
                     @method('patch')

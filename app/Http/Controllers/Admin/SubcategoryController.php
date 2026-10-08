@@ -1,5 +1,7 @@
 <?php
 
+// AI-GENERATED (beyond course scope): subcategories, drag-and-drop sorting of photos in the gallery — written with Claude Code
+
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\PhotoCategory;

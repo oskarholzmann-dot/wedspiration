@@ -40,6 +40,7 @@ class PhotoController extends Controller
         $folder = $user->defaultFolder();
         $folder->photos()->attach($photo);
 
+        // AI-GENERATED (beyond course scope): JSON answer for the multi/folder upload script — written with Claude Code
         // The multi-upload script sends one photo per request and expects JSON back
         if ($request->wantsJson()) {
             $request->session()->flash('success', 'Your photos were uploaded.');
@@ -96,6 +97,7 @@ class PhotoController extends Controller
         $photo->deleteImageFile();
         $photo->delete();
 
+        // AI-GENERATED (beyond course scope): deleting from photo tiles without reloading — written with Claude Code
         // Delete button on a photo tile: remove the tile without reloading the page
         if ($request->wantsJson()) {
             return response()->json(['deleted' => true]);

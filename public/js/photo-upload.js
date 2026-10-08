@@ -1,3 +1,4 @@
+// AI-GENERATED (beyond course scope): multi and folder upload, photos shrunk in the browser — written with Claude Code
 /*
  * Photo upload helpers.
  *

@@ -79,6 +79,7 @@ class User extends Authenticatable
             ?? $this->folders()->create(['name' => $this->name."'s wedding"]);
     }
 
+    // AI-GENERATED (beyond course scope): saving photos into your folder — written with Claude Code
     /**
      * Ids of the photos in the user's folder, loaded once per request (used to mark photos as saved).
      *

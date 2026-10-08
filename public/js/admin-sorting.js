@@ -1,3 +1,4 @@
+// AI-GENERATED (beyond course scope): selecting photos and sorting them into categories / subcategories by drag and drop — written with Claude Code
 /*
  * Admins: sort photos in the gallery by dragging them onto a category or subcategory.
  *

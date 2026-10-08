@@ -77,6 +77,7 @@ class FolderController extends Controller
             ->with('success', 'The folder was updated.');
     }
 
+    // AI-GENERATED (beyond course scope): bulk delete with checkboxes — written with Claude Code
     /**
      * Delete several folders at once (the ticked checkboxes in the list).
      * Optionally also delete the photos their owners uploaded into them.

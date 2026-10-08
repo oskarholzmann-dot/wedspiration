@@ -1,5 +1,7 @@
 <?php
 
+// AI-GENERATED (beyond course scope): saving other couples' photos into your own folder (button / drag and drop) — written with Claude Code
+
 namespace App\Http\Controllers\Userzone;
 
 use App\Http\Controllers\Controller;

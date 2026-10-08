@@ -18,6 +18,7 @@ class GalleryController extends Controller
     {
         // Unknown categories or subcategories in the URL are simply ignored
         $activeCategory = PhotoCategory::tryFrom((string) $request->query('category'));
+        // AI-GENERATED (beyond course scope): subcategory filter — written with Claude Code
         $activeSubcategory = Subcategory::find($request->integer('subcategory') ?: null);
 
         $photos = Photo::with('user')
@@ -43,6 +44,7 @@ class GalleryController extends Controller
         return view('gallery.show', compact('photo'));
     }
 
+    // AI-GENERATED (beyond course scope): folder view of the gallery — written with Claude Code
     /**
      * Show all folders that contain photos, each with a cover photo.
      */
@@ -58,6 +60,7 @@ class GalleryController extends Controller
         return view('gallery.folders', compact('folders'));
     }
 
+    // AI-GENERATED (beyond course scope): public folder pages — written with Claude Code
     /**
      * Show the photos of one folder. The notes for the photographer stay private.
      */
