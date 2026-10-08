@@ -49,10 +49,10 @@
     </span>
 
     @if ($deleteUrl)
-        {{-- Owners (and admins) can delete the photo right here; without JavaScript this is a normal form --}}
+        {{-- Owners (and admins) can delete the photo right here, without asking first;
+             without JavaScript this is a normal form --}}
         <form method="post" action="{{ $deleteUrl }}" data-delete-form
-              class="absolute top-2 left-2 transition sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
-              onsubmit="return confirm(@js('Delete "'.$photo->title.'"? It disappears from the gallery and every folder. This cannot be undone.'))">
+              class="absolute top-2 left-2 transition sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
             @csrf
             @method('delete')
             {{-- Without JavaScript: come back to this page instead of another list --}}

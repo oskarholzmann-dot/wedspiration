@@ -81,7 +81,6 @@ test('names with quotes cannot break the delete confirmation', function () {
         ->assertSee('Oskar'.$apostrophe.'s', false);
 
     $this->actingAs($this->admin)->get(route('admin.photos.index'))->assertSee('Anna'.$apostrophe.'s', false);
-    $this->actingAs($this->admin)->get(route('gallery.index'))->assertSee('Anna'.$apostrophe.'s', false);
 });
 
 test('the folder list has a delete button for every folder', function () {

@@ -88,12 +88,9 @@ if (box) {
         open(link.closest('[data-photo-card]'));
     });
 
-    // Admins: delete the photo shown, remove its tile and move on to the next one
+    // Delete the photo shown (owners and admins), remove its tile and move on to the next one
     deleteButton?.addEventListener('click', async () => {
         const tile = tiles.at(index);
-        if (!confirm(`Delete "${tile.dataset.title}" for everyone? This cannot be undone.`)) {
-            return;
-        }
 
         const response = await fetch(tile.dataset.deleteUrl, {
             method: 'DELETE',

@@ -153,6 +153,15 @@ test('owners see a delete button on their own photos, using their own route', fu
         ->assertDontSee(route('admin.photos.destroy', $own), false);
 });
 
+test('deleting from a tile does not ask for confirmation', function () {
+    $user = User::factory()->create();
+    Photo::factory()->for($user)->create();
+
+    $this->actingAs($user)->get(route('gallery.index'))
+        ->assertSee('data-delete-form', false)
+        ->assertDontSee('confirm(', false);
+});
+
 test('owners can delete their photo from a tile without leaving the page', function () {
     $user = User::factory()->create();
     $photo = Photo::factory()->for($user)->create();
