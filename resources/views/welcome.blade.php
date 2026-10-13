@@ -19,6 +19,7 @@
                         Start your folder
                     </a>
                 @endguest
+                <x-whatsapp-share-button :url="route('welcome')" text="Plan your wedding inspiration with Wedspiration:" class="px-6 py-3 text-base" />
             </div>
         </div>
     </section>

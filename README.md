@@ -117,6 +117,7 @@ grep -rn "AI-GENERATED" app config database resources routes public/js tests
 | Lightbox, infinite scrolling, stable masonry layout | `public/js/lightbox.js`, `public/js/infinite-scroll.js`, `public/js/masonry.js`, `Photo::imageSize` |
 | Subcategories with drag-and-drop sorting (incl. selecting several photos) | `Subcategory` model, migrations, factory, `Admin/SubcategoryController`, `public/js/admin-sorting.js` |
 | Bulk delete in the admin lists, delete buttons on photo tiles | `bulkDestroy()` in `Admin/FolderController` and `Admin/PhotoController`, `components/photo-card.blade.php` |
+| WhatsApp share button on the welcome page and the folder pages | `components/whatsapp-share-button.blade.php`, `WhatsAppShareTest` |
 | Versioned script URLs, serving uploads without `storage:link` | `components/script.blade.php`, `StorageFileController` |
 
 The parts that implement the course requirements (models, relationships, migrations, factories, seeder, routes and controllers, the full CRUD in the admin area, validation, authentication and authorisation, layouts) are not marked.

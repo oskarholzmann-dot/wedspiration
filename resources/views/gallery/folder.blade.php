@@ -13,12 +13,16 @@
                 </p>
             </div>
 
-            @can('update', $folder)
-                <a href="{{ route('user.folders.edit', $folder) }}"
-                   class="rounded-md bg-stone-900 px-4 py-2 text-sm text-white hover:bg-stone-700">
-                    Edit folder
-                </a>
-            @endcan
+            <div class="flex flex-wrap gap-2">
+                <x-whatsapp-share-button :url="route('gallery.folders.show', $folder)" />
+
+                @can('update', $folder)
+                    <a href="{{ route('user.folders.edit', $folder) }}"
+                       class="rounded-md bg-stone-900 px-4 py-2 text-sm text-white hover:bg-stone-700">
+                        Edit folder
+                    </a>
+                @endcan
+            </div>
         </div>
 
         @if ($photos->isEmpty())
